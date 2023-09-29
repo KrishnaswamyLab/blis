@@ -8,3 +8,5 @@ Create a conda environment
 
 `conda activate blis`
 
+`pip install -e .`
+
