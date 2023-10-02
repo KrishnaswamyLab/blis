@@ -53,7 +53,7 @@ def main():
     # load adjacency matrix and signal
     A = np.load(os.path.join(dataset_dir, 'adjacency_matrix.npy'))
     x = np.load(os.path.join(dataset_dir, 'graph_signals.npy'))
-
+    
     if args.wavelet_type == 'W2':
         wavelets = wav.get_W_2(A, args.largest_scale, low_pass_as_wavelet=(args.scattering_type == 'blis'))
     else:

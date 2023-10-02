@@ -29,6 +29,10 @@ def scattering_transform(x, scattering_type, wavelets, num_layers, highest_momen
     # layer_num is the largest layer size within the loop
     # layer is the layer number looping up to layer_num 
     for layer_num in range(1, num_layers+1):
+        layer_dir = os.path.join(save_dir, f'layer_{layer_num}')
+        if os.path.exists(layer_dir):
+            # pass over this iteration of the for loop
+            continue
         # note that this code has redundant calculations for each layer!
         if scattering_type == 'blis':
             combinations = list(product(range(J), [relu, reverse_relu], repeat = layer_num))
@@ -58,7 +62,6 @@ def scattering_transform(x, scattering_type, wavelets, num_layers, highest_momen
         # write them to memory
 
         #create a directory for each layer 
-        layer_dir = os.path.join(save_dir, f'layer_{layer_num}')
         if not os.path.exists(layer_dir):
             os.makedirs(layer_dir)
         for moment_ind in range(highest_moment):
