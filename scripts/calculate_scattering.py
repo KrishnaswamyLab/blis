@@ -15,8 +15,14 @@ def validate_args(args):
         raise ValueError("Invalid sub_dataset for dataset 'traffic'.")
     # Check if dataset is 'partly_cloudy' and sub_dataset is valid
     if args.dataset == 'partly_cloudy':
-        if not (0 <= int(args.sub_dataset) <= 155):
-            raise ValueError("Invalid sub_dataset for dataset 'partly_cloudy'. Should be between 0 and 155.")
+        try:
+            sub_dataset_val = int(args.sub_dataset)
+            if not (0 <= sub_dataset_val <= 154):
+                raise ValueError("Invalid sub_dataset for dataset 'partly_cloudy'. Should be between 0 and 154.")
+            # Check for 4-digit formatting and format if necessary
+            args.sub_dataset = f"{sub_dataset_val:04}"
+        except ValueError:
+            raise ValueError("Sub_dataset for dataset 'partly_cloudy' should be an integer between 0 and 154.")
     if args.dataset == 'synthetic':
         raise ValueError("Synthetic still needs to be incorporated")
 
