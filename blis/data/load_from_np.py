@@ -1,6 +1,12 @@
 import torch 
+import numpy as np
+from torch.utils.data import Subset
 from torch_geometric.data import Data
 from torch_geometric.loader import DataLoader
+from sklearn.model_selection import train_test_split
+import os
+
+from blis import DATA_DIR
 
 # Convert adjacency matrix to edge indices
 def adjacency_to_edge_indices(A):
@@ -9,7 +15,7 @@ def adjacency_to_edge_indices(A):
 
 # Create a dataset and data loader
 def create_dataset(X, y, A):
-    edge_index = adjacency_to_edge_indices(A)
+    edge_index = adjacency_to_edge_indices(torch.Tensor(A))
     data_list = []
     
     for i in range(X.shape[0]):
