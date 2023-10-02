@@ -1,4 +1,4 @@
-from blis.data import traffic
+from blis.data import traffic, cloudy, synthetic
 import argparse
 from sklearn.linear_model import LogisticRegression
 
@@ -10,13 +10,30 @@ def main(args,scattering_dict):
         if args.dataset == "traffic":
             (X_train, y_train), (X_val, y_val), (X_test, y_test) = traffic.traffic_scattering_data_loader(seed=42,
                                                                                                     subdata_type=args.sub_dataset,
-                                                                                                    task_type='DAY',
+                                                                                                    task_type=args.task_type,
                                                                                                     batch_size=32,
                                                                                                     scattering_dict=scattering_dict)
-        
+        elif args.dataset == "partly_cloudy":
+            (X_train, y_train), (X_val, y_val), (X_test, y_test) = cloudy.cloudy_scattering_data_loader(seed=42,
+                                                                                                    subdata_type=args.sub_dataset,
+                                                                                                    task_type=args.task_type,
+                                                                                                    batch_size=32,
+                                                                                                    scattering_dict=scattering_dict)
+        elif args.dataset == "synthetic":
+            (X_train, y_train), (X_val, y_val), (X_test, y_test) = synthetic.synthetic_scattering_data_loader(seed=42,
+                                                                                                    subdata_type=args.sub_dataset,
+                                                                                                    task_type=args.task_type,
+                                                                                                    batch_size=32,
+                                                                                                    scattering_dict=scattering_dict)
+        else:
+            raise ValueError("Invalid dataset")
+
+
+
         X_train = X_train.reshape(X_train.shape[0],-1)
         X_val = X_val.reshape(X_val.shape[0],-1)
         X_test = X_test.reshape(X_test.shape[0],-1)
+
         if args.model == "LR":
             model = LogisticRegression(random_state=0, max_iter=1000).fit(X_train, y_train)
             print("Train score : ", model.score(X_train, y_train))
@@ -33,6 +50,7 @@ if __name__ == "__main__":
     parser.add_argument("--dataset", choices=['traffic', 'partly_cloudy', 'synthetic'], help="Dataset: 'traffic' or 'partly_cloudy' or 'synthetic'.")
     parser.add_argument("--sub_dataset", help="Sub-dataset value depending on the dataset chosen.")
     parser.add_argument("--num_layers", type=int, default=2, help="Largest scattering layer")
+    parser.add_argument("--task_type", type=str,  help="The task type to use for the classification")
     parser.add_argument("--model", type=str, default="LR", help="Classification model to use")
 
     args = parser.parse_args()
@@ -44,6 +62,6 @@ if __name__ == "__main__":
     
     main(args,scattering_dict)
 
-    #Example : python classify_scattering.py --dataset=traffic --largest_scale=4 --sub_dataset=PEMS04 --scattering_type=blis
+    #Example : python classify_scattering.py --dataset=traffic --largest_scale=4 --sub_dataset=PEMS04 --scattering_type=blis --task_type=DAY
 
 
