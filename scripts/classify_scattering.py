@@ -35,17 +35,17 @@ def main(args,scattering_dict):
         X_train = X_train.reshape(X_train.shape[0],-1) 
         X_test = X_test.reshape(X_test.shape[0],-1)
 
-        if args.model = "LR":
+        if args.model == "LR":
             base_model = LogisticRegression() 
-        if args.model = "SVC":
+        if args.model == "SVC":
             base_model = SVC() 
-        if args.model = "KNN":
+        if args.model == "KNN":
             base_model = KNeighborsClassifier()
-        if args.model = "MLP":
+        if args.model == "MLP":
             base_model = MLPClassifier() 
-        if args.model = "RF":
+        if args.model == "RF":
             base_model = RandomForest()
-        if args.model = "XGB":
+        if args.model == "XGB":
             base_model = xgb.XGBClassifier()
 
         # Create a pipeline that first applies the standard scaler, then the model
