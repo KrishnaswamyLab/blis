@@ -69,7 +69,11 @@ def synthetic_scattering_data_loader(seed, subdata_type, task_type, batch_size, 
 
     train_idx, val_idx = train_test_split(np.arange(len(X)), test_size=0.3, random_state=seed)
     val_idx, test_idx = train_test_split(val_idx, test_size=0.5, random_state=seed)
-    return (X[train_idx], y[train_idx]), (X[val_idx], y[val_idx]), (X[test_idx], y[test_idx])
+
+    X_train_val = np.concatenate((X[train_idx],X[val_idx]),0)
+    y_train_val = np.concatenate((y[train_idx],y[val_idx]),0)
+
+    return (X_train_val, y_train_val), (X[test_idx], y[test_idx])
 
 
 
