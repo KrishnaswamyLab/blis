@@ -36,15 +36,16 @@ def main():
     # Additional validation for the arguments
     validate_args(args)
 
+    # dataset directory specifies up to the sub dataset level 
     dataset_dir = os.path.join(DATA_DIR, args.dataset, args.sub_dataset)
+
+    # the processed directory records scattering type and the largest wavelet scale
     processed_dir = os.path.join(dataset_dir, 'processed', args.scattering_type, f'largest_scale_{args.largest_scale}')
     if not os.path.exists(processed_dir):
-        # If not, create the directory
         os.makedirs(processed_dir)
 
+    # load adjacency matrix and signal
     A = np.load(os.path.join(dataset_dir, 'adjacency_matrix.npy'))
-
-    import pdb; pdb.set_trace()
     x = np.load(os.path.join(dataset_dir, 'graph_signals.npy'))
 
     if args.wavelet_type == 'W2':
@@ -54,12 +55,6 @@ def main():
     
     st.scattering_transform(x, args.scattering_type, wavelets, args.num_layers, args.highest_moment, processed_dir)
     
-    
-
-
-
-
-
 if __name__ == "__main__":
     start_time = time.time()  # Record the start time
     main()
@@ -68,17 +63,3 @@ if __name__ == "__main__":
     elapsed_time = end_time - start_time  # Compute the elapsed time
     print(f"Elapsed time: {elapsed_time:.2f} seconds")
 
-# information needed
-# scattering type
-# wavelet type 
-# largest scale 
-# highest moment 
-# dataset 
-# specific count within the dataset
-
-
-# print('hello world')
-# print(DATA_DIR)
-# traffic_path = os.path.join(DATA_DIR, 'traffic')
-
-# print(os.listdir(traffic_path))
