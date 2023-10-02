@@ -8,19 +8,19 @@ def main(args,scattering_dict):
     for seed in [42,43,44,45,56]:
 
         if args.dataset == "traffic":
-            (X_train, y_train), (X_val, y_val), (X_test, y_test) = traffic.traffic_scattering_data_loader(seed=42,
+            (X_train, y_train), (X_val, y_val), (X_test, y_test) = traffic.traffic_scattering_data_loader(seed=seed,
                                                                                                     subdata_type=args.sub_dataset,
                                                                                                     task_type=args.task_type,
                                                                                                     batch_size=32,
                                                                                                     scattering_dict=scattering_dict)
         elif args.dataset == "partly_cloudy":
-            (X_train, y_train), (X_val, y_val), (X_test, y_test) = cloudy.cloudy_scattering_data_loader(seed=42,
+            (X_train, y_train), (X_val, y_val), (X_test, y_test) = cloudy.cloudy_scattering_data_loader(seed=seed,
                                                                                                     subdata_type=args.sub_dataset,
                                                                                                     task_type=args.task_type,
                                                                                                     batch_size=32,
                                                                                                     scattering_dict=scattering_dict)
         elif args.dataset == "synthetic":
-            (X_train, y_train), (X_val, y_val), (X_test, y_test) = synthetic.synthetic_scattering_data_loader(seed=42,
+            (X_train, y_train), (X_val, y_val), (X_test, y_test) = synthetic.synthetic_scattering_data_loader(seed=seed,
                                                                                                     subdata_type=args.sub_dataset,
                                                                                                     task_type=args.task_type,
                                                                                                     batch_size=32,
