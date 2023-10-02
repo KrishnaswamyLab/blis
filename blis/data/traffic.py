@@ -23,7 +23,7 @@ def traffic_data_loader(seed, subdata_type, task_type, batch_size):
 
     data = create_dataset(X, y, A)
 
-    train_idx, val_idx = train_test_split(np.arange(len(data)), test_size=0.7, random_state=seed)
+    train_idx, val_idx = train_test_split(np.arange(len(data)), test_size=0.3, random_state=seed)
     val_idx, test_idx = train_test_split(val_idx, test_size=0.5, random_state=seed)
 
     train_ds = Subset(data,train_idx)
@@ -67,9 +67,8 @@ def traffic_scattering_data_loader(seed, subdata_type, task_type, batch_size, sc
     X = np.concatenate(moments,1)
     y = np.load(label_path)
 
-    train_idx, val_idx = train_test_split(np.arange(len(X)), test_size=0.7, random_state=seed)
+    train_idx, val_idx = train_test_split(np.arange(len(X)), test_size=0.3, random_state=seed)
     val_idx, test_idx = train_test_split(val_idx, test_size=0.5, random_state=seed)
-    
     return (X[train_idx], y[train_idx]), (X[val_idx], y[val_idx]), (X[test_idx], y[test_idx])
 
 
