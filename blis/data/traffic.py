@@ -40,7 +40,7 @@ def traffic_data_loader(seed, subdata_type, task_type, batch_size):
     return train_dl, val_dl, test_dl, num_classes
 
 
-def traffic_scattering_data_loader(seed, subdata_type, task_type, batch_size, scattering_dict = None):
+def traffic_scattering_data_loader(seed, subdata_type, task_type, scattering_dict = None):
     """
     Extract the scattering features according to the following options
 

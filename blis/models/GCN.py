@@ -1,3 +1,4 @@
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch_geometric.data import Data, DataLoader
@@ -9,7 +10,7 @@ class GCN(nn.Module):
         torch.manual_seed(42)
         self.conv1 = GCNConv(in_features, hidden_channels)
         self.conv2 = GCNConv(hidden_channels, hidden_channels)
-        self.lin = Linear(hidden_channels, num_classes)
+        self.lin = nn.Linear(hidden_channels, num_classes)
         self.final_nonlin = nn.Softmax(dim = 1)
     
     def forward(self, x, edge_index, batch):

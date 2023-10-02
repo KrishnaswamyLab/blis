@@ -94,7 +94,7 @@ def main(args,scattering_dict):
         
         y_pred = clf.predict(X_test)
         accuracy = accuracy_score(y_test, y_pred)
-        print("Best parameters found: "clf.best_params_)
+        print("Best parameters found: ",clf.best_params_)
         print("Train score : ", clf.score(X_train, y_train))
         print("Test score : ", clf.score(X_test, y_test))
         

@@ -20,7 +20,7 @@ def create_dataset(X, y, A):
     
     for i in range(X.shape[0]):
         num_nodes = X[i].shape[0]
-        data = Data(x=X[i], edge_index=edge_index, y=y[i])
+        data = Data(x=torch.Tensor(X[i]), edge_index=edge_index, y=y[i])
         data_list.append(data)
         
     return data_list
