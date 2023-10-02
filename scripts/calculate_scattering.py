@@ -23,8 +23,8 @@ def validate_args(args):
             args.sub_dataset = f"{sub_dataset_val:04}"
         except ValueError:
             raise ValueError("Sub_dataset for dataset 'partly_cloudy' should be an integer between 0 and 154.")
-    if args.dataset == 'synthetic':
-        raise ValueError("Synthetic still needs to be incorporated")
+    if args.dataset == 'synthetic' and args.sub_dataset not in ['bimodal_normal', 'bimodal_camel']:
+        raise ValueError("Invalid sub dataset for dataset synthetic")
 
 def main():
     parser = argparse.ArgumentParser(description="Parse arguments for the program.")

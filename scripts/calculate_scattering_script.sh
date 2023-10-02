@@ -5,7 +5,7 @@
 #SBATCH --array=0-7
 #SBATCH --mem=16G
 #SBATCH --reservation=sumry2023
-#SBATCH --time=20:00:00
+#SBATCH --time=2:00:00
 
 module load miniconda
 conda activate blis 
