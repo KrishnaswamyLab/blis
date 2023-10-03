@@ -35,7 +35,9 @@ def cloudy_data_loader(seed, subdata_type, task_type, batch_size):
     val_dl = DataLoader(val_ds, batch_size=batch_size, shuffle=False)
     test_dl = DataLoader(test_ds, batch_size=batch_size, shuffle=False)
     
-    return train_dl, val_dl, test_dl
+    num_classes = len(np.unique(y))
+
+    return train_dl, val_dl, test_dl, num_classes
 
 
 def cloudy_scattering_data_loader(seed, subdata_type, task_type, batch_size, scattering_dict = None):

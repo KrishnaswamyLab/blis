@@ -1,5 +1,5 @@
 from blis.data import traffic, cloudy, synthetic
-from blis.models.GCN import GCN
+from blis.models.GNN_models import GCN, GAT, GIN
 import argparse
 import torch
 
@@ -32,6 +32,11 @@ def main(args):
 
         if args.model == "GCN":
             model = GCN(in_features = input_dim, hidden_channels = args.hidden_dim, num_classes = num_classes )
+        if args.model == "GAT":
+            model = GCN(in_features = input_dim, hidden_channels = args.hidden_dim, num_classes = num_classes )
+        if args.model == "GIN":
+            model = GIN(in_features = input_dim, hidden_channels = args.hidden_dim, num_classes = num_classes )
+        
         
         for epoch in range(args.epochs):
 
@@ -40,6 +45,8 @@ def main(args):
                 preds = model(b)
                 loss = 0
                 #COMPLETE LOSS FUNCTION
+
+                # TODO: reference trafficGCN.py from the sumry repo to do this
             
 
             
