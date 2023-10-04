@@ -1,5 +1,9 @@
 from blis.data import traffic, cloudy, synthetic
 import argparse
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import accuracy_score
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC 
 from sklearn.ensemble import RandomForestClassifier
@@ -7,11 +11,16 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier 
 from sklearn.linear_model import LogisticRegression 
 import xgboost as xgb
+import numpy as np
 
-def main(args,scattering_dict):
+import warnings
+from sklearn.exceptions import ConvergenceWarning
+warnings.filterwarnings('ignore', category=ConvergenceWarning)
 
+def run_classifier_scattering(args,scattering_dict):
+    full_test_scores = []
+    full_train_scores = []
     for seed in [42,43,44,45,56]:
-
         if args.dataset == "traffic":
             (X_train, y_train),  (X_test, y_test) = traffic.traffic_scattering_data_loader(seed=seed,
                                                                                                     subdata_type=args.sub_dataset,
@@ -44,7 +53,7 @@ def main(args,scattering_dict):
         if args.model == "MLP":
             base_model = MLPClassifier() 
         if args.model == "RF":
-            base_model = RandomForest()
+            base_model = RandomForestClassifier()
         if args.model == "XGB":
             base_model = xgb.XGBClassifier()
 
@@ -57,36 +66,36 @@ def main(args,scattering_dict):
         # Define hyperparameters grid for each model (with 'model__' prefix for parameters)
         if isinstance(base_model, RandomForestClassifier):
             param_grid = {
-                'model__n_estimators': [10, 50, 100, 200],
-                'model__max_depth': [None, 10, 20, 30],
-                'model__min_samples_split': [2, 5, 10]
+                'model__n_estimators': [50, 100, 150],
+                'model__max_depth': [None, 10, 20],
+                'model__min_samples_split': [2, 5]
             }
         elif isinstance(base_model, SVC):
             param_grid = {
-                'model__C': [0.01, 0.1, 1, 10],
+                'model__C': [0.1, 1, 10],
                 'model__kernel': ['linear', 'rbf'],
-                'model__gamma': ['scale','auto', .001, .01, .1, 1, 10]
+                'model__gamma': ['scale','auto', .01, .1, 1]
             }
         elif isinstance(base_model, KNeighborsClassifier):
             param_grid = {
-                'model__n_neighbors': [3, 5, 7, 11],
+                'model__n_neighbors': [3, 5, 7],
                 'model__weights': ['uniform', 'distance']
             }
         elif isinstance(base_model, MLPClassifier):
             param_grid = {
                 'model__hidden_layer_sizes': [(50,), (100,), (50, 50)],
-                'model__activation': ['relu']
+                'model__activation': ['relu'],
+                'model__alpha': [.01]
             }
         elif isinstance(base_model, LogisticRegression):
             param_grid = {
-                'model__C': [0.1, 1, 10, 100],
-                'model__solver': ['newton-cg', 'lbfgs', 'liblinear']
+                'model__C': [0.1, 1, 10],
+                'model__solver': ['lbfgs', 'liblinear']
             }
         elif isinstance(base_model, xgb.XGBClassifier):
             param_grid = {
                 'model__n_estimators': [50, 100, 150],
-                'model__learning_rate': [0.01, 0.05, 0.1],
-                'model__max_depth': [3, 5, 7]
+                'model__learning_rate': [0.01, 0.05, 0.1]
             }
 
         clf = GridSearchCV(pipeline, param_grid, cv = 3)
@@ -94,9 +103,19 @@ def main(args,scattering_dict):
         
         y_pred = clf.predict(X_test)
         accuracy = accuracy_score(y_test, y_pred)
-        print("Best parameters found: ",clf.best_params_)
-        print("Train score : ", clf.score(X_train, y_train))
-        print("Test score : ", clf.score(X_test, y_test))
+        #print("Best parameters found: ",clf.best_params_)
+        train_score = clf.score(X_train, y_train)
+        test_score = clf.score(X_test, y_test)
+        #print("Train score : ", train_score)
+        #print("Test score : ", test_score)
+        full_test_scores.append(test_score)
+        full_train_scores.append(train_score)
+    
+    final_score = np.average(np.array(full_test_scores))
+    final_stdev = np.std(np.array(full_test_scores))
+    #print("Final score: ", final_score )
+    #print("Final stdev: ", final_stdev)
+    return final_score, final_stdev
         
 
 if __name__ == "__main__":
@@ -104,22 +123,24 @@ if __name__ == "__main__":
 
     parser.add_argument("--scattering_type", choices=['blis', 'modulus'], help="Type of scattering: 'blis' or 'modulus'.")
     parser.add_argument("--largest_scale", type=int, help="Largest (dyadic) scale as a positive integer.")
-    parser.add_argument("--highest_moment", type=int, default=1, help="Highest moment as a positive integer. Defaults to 1.")
+    parser.add_argument("--moment_list", nargs='+', type=int, default=[1], help="List of moments as positive integers. E.g., --moment_list 1 2 3.") 
     parser.add_argument("--dataset", choices=['traffic', 'partly_cloudy', 'synthetic'], help="Dataset: 'traffic' or 'partly_cloudy' or 'synthetic'.")
     parser.add_argument("--sub_dataset", help="Sub-dataset value depending on the dataset chosen.")
-    parser.add_argument("--num_layers", type=int, default=2, help="Largest scattering layer")
-    parser.add_argument("--model", choices=['RF, SVC, KNN, MLP, LR', "XGB"], type=str, default="LR", help="Classification model to use. Options: 'RF, SVC, KNN, MLP, LR, XGB'")
+    parser.add_argument("--layer_list", nargs='+', type=int, default=[2], help="List of layers as positive integers. E.g., --layer_list 1 2.")
+    parser.add_argument("--model", choices=['RF', 'SVC', 'KNN', 'MLP', 'LR','XGB'], type=str, default="LR", help="Classification model to use. Options: 'RF', 'SVC', 'KNN', 'MLP', 'LR','XGB'")
     parser.add_argument("--task_type", type=str,  help="The task type to use for the classification")
 
     args = parser.parse_args()
 
+
     scattering_dict = {"scattering_type": args.scattering_type,
                        "scale_type": f"largest_scale_{args.largest_scale}",
-                       "layers": [i+1 for i in range(args.num_layers)],
-                       "moments" : [i+1 for i in range(args.highest_moment)]}
+                       "layers": args.layer_list,
+                       "moments" : args.moment_list}
     
-    main(args,scattering_dict)
+    final_score, final_stdev = run_classifier_scattering(args,scattering_dict)
+    print(f"{final_score},{final_stdev}")
 
     #Example : python classify_scattering.py --dataset=traffic --largest_scale=4 --sub_dataset=PEMS04 --scattering_type=blis --task_type=DAY
-
+    #Example : python classify_scattering.py --dataset=partly_cloudy --sub_dataset=0001 --largest_scale=4 --scattering_type=blis --task_type=EMOTION3 --moment_list 1 --layer_list 1 2 3 --model SVC
 

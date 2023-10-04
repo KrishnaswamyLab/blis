@@ -10,7 +10,7 @@ from blis import DATA_DIR
 from blis.data.load_from_np import create_dataset
 
 
-def cloudy_data_loader(seed, subdata_type, task_type, batch_size):
+def cloudy_data_loader(seed, subdata_type, task_type, batch_size = 32):
     
     label_path = os.path.join(DATA_DIR,"partly_cloudy",subdata_type,task_type,"label.npy")
     graph_path = os.path.join(DATA_DIR,"partly_cloudy",subdata_type,"adjacency_matrix.npy")
@@ -40,7 +40,7 @@ def cloudy_data_loader(seed, subdata_type, task_type, batch_size):
     return train_dl, val_dl, test_dl, num_classes
 
 
-def cloudy_scattering_data_loader(seed, subdata_type, task_type, batch_size, scattering_dict = None):
+def cloudy_scattering_data_loader(seed, subdata_type, task_type, batch_size = 32, scattering_dict = None):
     """
     Extract the scattering features according to the following options
 
@@ -87,6 +87,6 @@ if __name__ == "__main__":
     "layers" :[1],
     "moments" : [1,2]}
     
-    tr, vl, ts = traffic_scattering_data_loader(42, "PEMS04", "DAY", 32, scattering_dict = scattering_dict)
+    tr, vl, ts = traffic_scattering_data_loader(42, "PEMS04", "DAY", batch_size=32, scattering_dict = scattering_dict)
     for i,b in enumerate(tr):
         breakpoint()
