@@ -9,7 +9,6 @@ from torch.nn import Sequential, Linear, ReLU
 class GCN(nn.Module):
     def __init__(self, in_features,hidden_channels, num_classes):
         super(GCN, self).__init__()
-        torch.manual_seed(42)
         self.conv1 = GCNConv(in_features, hidden_channels)
         self.conv2 = GCNConv(hidden_channels, hidden_channels)
         self.lin = Linear(hidden_channels, num_classes)
@@ -32,7 +31,6 @@ class GCN(nn.Module):
 class GIN(nn.Module):
     def __init__(self, in_features, hidden_channels, num_classes):
         super(GIN, self).__init__()
-        torch.manual_seed(42)
 
         # Define the neural network for GINConv (this can be adjusted)
         nn1 = Sequential(Linear(in_features, hidden_channels), ReLU(), Linear(hidden_channels, hidden_channels))
@@ -58,7 +56,6 @@ class GIN(nn.Module):
 class GAT(nn.Module):
     def __init__(self, in_features, hidden_channels, num_classes, heads=1):
         super(GAT, self).__init__()
-        torch.manual_seed(42)
 
         # The number of heads can be adjusted for multi-head attention.
         self.conv1 = GATConv(in_features, hidden_channels, heads=heads, concat=True)

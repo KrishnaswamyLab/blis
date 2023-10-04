@@ -5,6 +5,7 @@ import torch
 
 
 def main(args):
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     for seed in [42,43,44,45,56]:
 
@@ -26,9 +27,9 @@ def main(args):
         else:
             raise ValueError("Invalid dataset")
 
-
+        import pdb; pdb.set_trace()
         b0 = next(iter(train_dl))
-        input_dim = b0.x.shape[1]
+        input_dim = int(b0.x.shape[0]/len(b0.y))
 
         if args.model == "GCN":
             model = GCN(in_features = input_dim, hidden_channels = args.hidden_dim, num_classes = num_classes )
@@ -36,17 +37,57 @@ def main(args):
             model = GCN(in_features = input_dim, hidden_channels = args.hidden_dim, num_classes = num_classes )
         if args.model == "GIN":
             model = GIN(in_features = input_dim, hidden_channels = args.hidden_dim, num_classes = num_classes )
-        
-        
+
+        # Move the model to the specified device
+        model = model.to(device)
+
+        # Define the optimizer
+        learning_rate = .001
+        optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+
+        # Define the loss function
+        criterion = torch.nn.CrossEntropyLoss()
+
+        # Training loop
         for epoch in range(args.epochs):
+            model.train()
+            total_loss = 0
 
-            for i,b in enumerate(train_dl):
-                model.zero_grad()
-                preds = model(b)
-                loss = 0
-                #COMPLETE LOSS FUNCTION
+            for i, b in enumerate(train_dl):
+                # Move data to the specified device
+                b = b.to(device)
 
-                # TODO: reference trafficGCN.py from the sumry repo to do this
+                optimizer.zero_grad()
+
+                # Forward pass
+                out = model(b.x, b.edge_index, b.batch)
+                loss = criterion(out, b.y)
+
+                # Backward pass
+                loss.backward()
+                optimizer.step()
+
+                total_loss += loss.item()
+
+            print(f"Epoch {epoch+1}/{args.epochs}, Loss: {total_loss / len(train_dl)}")
+
+        # Testing loop
+        model.eval()
+        correct = 0
+        total = 0
+
+        with torch.no_grad():
+            for b in test_dl:
+                # Move data to the specified device
+                b = b.to(device)
+
+                out = model(b.x, b.edge_index, b.batch)
+                _, predicted = torch.max(out, 1)
+                total += b.y.size(0)
+                correct += (predicted == b.y).sum().item()
+
+        print(f"Accuracy on test set: {100 * correct / total}%")
+
             
 
             
@@ -65,6 +106,6 @@ if __name__ == "__main__":
 
     main(args)
 
-    #Example : python classify_scattering.py --dataset=traffic --largest_scale=4 --sub_dataset=PEMS04 --scattering_type=blis --task_type=DAY
+    #Example : python classify_torch.py --dataset partly_cloudy --sub_dataset 0001 --task_type EMOTION3
 
 
