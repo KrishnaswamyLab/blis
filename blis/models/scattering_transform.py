@@ -21,8 +21,13 @@ def scattering_transform(x, scattering_type, wavelets, num_layers, highest_momen
     '''
     if scattering_type not in ["blis", "modulus"]:
         raise ValueError("Invalid scattering type. Accepted values are 'blis' or 'modulus'.")
+
+    if len(x.shape) == 3:
+        num_signals, N ,num_features = x.shape 
+    if len(x.shape) == 2:
+        num_signals, N = x.shape 
+        num_features= 1
     
-    num_signals, N ,num_features = x.shape 
     J = len(wavelets)
     
     # num_layers is the LARGEST layer size
