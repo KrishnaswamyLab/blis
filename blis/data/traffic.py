@@ -23,21 +23,18 @@ def traffic_data_loader(seed, subdata_type, task_type, batch_size):
 
     data = create_dataset(X, y, A)
 
-    train_idx, val_idx = train_test_split(np.arange(len(data)), test_size=0.3, random_state=seed)
-    val_idx, test_idx = train_test_split(val_idx, test_size=0.5, random_state=seed)
+    train_idx, test_idx = train_test_split(np.arange(len(data)), test_size=0.3, random_state=seed)
 
-    train_ds = Subset(data,train_idx)
-    val_ds = Subset(data,val_idx)
-    test_ds = Subset(data,test_idx)
+    train_ds = [data[i] for i in train_idx]
+    test_ds = [data[i] for i in test_idx]
 
 
     train_dl = DataLoader(train_ds, batch_size=batch_size, shuffle=True)
-    val_dl = DataLoader(val_ds, batch_size=batch_size, shuffle=False)
     test_dl = DataLoader(test_ds, batch_size=batch_size, shuffle=False)
     
     num_classes = len(np.unique(y))
-    
-    return train_dl, val_dl, test_dl, num_classes
+
+    return train_dl, test_dl, num_classes
 
 
 def traffic_scattering_data_loader(seed, subdata_type, task_type, scattering_dict = None):

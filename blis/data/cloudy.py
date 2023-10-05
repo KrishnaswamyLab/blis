@@ -18,26 +18,23 @@ def cloudy_data_loader(seed, subdata_type, task_type, batch_size = 32):
 
     # Load data
     X = np.load(signal_path)
+    # would like X to have shape (num_signals, num_nodes, num_features)?
     y = np.load(label_path)
     A = np.load(graph_path)
-
+    #import pdb; pdb.set_trace()
     data = create_dataset(X, y, A)
 
-    train_idx, val_idx = train_test_split(np.arange(len(data)), test_size=0.3, random_state=seed)
-    val_idx, test_idx = train_test_split(val_idx, test_size=0.5, random_state=seed)
+    train_idx, test_idx = train_test_split(np.arange(len(data)), test_size=0.3, random_state=seed)
 
-    train_ds = Subset(data,train_idx)
-    val_ds = Subset(data,val_idx)
-    test_ds = Subset(data,test_idx)
-
+    train_ds = [data[i] for i in train_idx]
+    test_ds = [data[i] for i in test_idx]
 
     train_dl = DataLoader(train_ds, batch_size=batch_size, shuffle=True)
-    val_dl = DataLoader(val_ds, batch_size=batch_size, shuffle=False)
     test_dl = DataLoader(test_ds, batch_size=batch_size, shuffle=False)
     
     num_classes = len(np.unique(y))
 
-    return train_dl, val_dl, test_dl, num_classes
+    return train_dl, test_dl, num_classes
 
 
 def cloudy_scattering_data_loader(seed, subdata_type, task_type, batch_size = 32, scattering_dict = None):
@@ -87,6 +84,6 @@ if __name__ == "__main__":
     "layers" :[1],
     "moments" : [1,2]}
     
-    tr, vl, ts = traffic_scattering_data_loader(42, "PEMS04", "DAY", batch_size=32, scattering_dict = scattering_dict)
-    for i,b in enumerate(tr):
+    tr, tl, num_class = cloudy_data_loader(42, "0001", "EMOTION3", batch_size=32)
+    for i,batch in enumerate(tr):
         breakpoint()

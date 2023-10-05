@@ -13,8 +13,12 @@ class GCN(nn.Module):
         self.conv2 = GCNConv(hidden_channels, hidden_channels)
         self.lin = Linear(hidden_channels, num_classes)
         self.final_nonlin = nn.Softmax(dim = 1)
+        self.in_features = in_features
     
     def forward(self, x, edge_index, batch):
+        if self.in_features == 1:
+            x = x[:,None]
+        #x = x[:,None]
         x = self.conv1(x, edge_index)
         x = x.relu()
         x = self.conv2(x, edge_index)
@@ -41,8 +45,11 @@ class GIN(nn.Module):
         
         self.lin = Linear(hidden_channels, num_classes)
         self.final_nonlin = nn.Softmax(dim=1)
+        self.in_features = in_features
 
     def forward(self, x, edge_index, batch):
+        if self.in_features == 1:
+            x = x[:,None]
         x = self.conv1(x, edge_index)
         x = x.relu()
         x = self.conv2(x, edge_index)
@@ -64,8 +71,11 @@ class GAT(nn.Module):
 
         self.lin = Linear(hidden_channels, num_classes)
         self.final_nonlin = nn.Softmax(dim=1)
+        self.in_features = 1
 
     def forward(self, x, edge_index, batch):
+        if self.in_features==1:
+            x = x[:,None]
         x = self.conv1(x, edge_index)
         x = F.elu(x)
         x = self.conv2(x, edge_index)

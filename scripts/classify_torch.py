@@ -2,34 +2,37 @@ from blis.data import traffic, cloudy, synthetic
 from blis.models.GNN_models import GCN, GAT, GIN
 import argparse
 import torch
+import numpy as np
 
 
 def main(args):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
+    total_performance = []
     for seed in [42,43,44,45,56]:
 
         if args.dataset == "traffic":
-            train_dl, val_dl, test_dl, num_classes = traffic.traffic_data_loader(seed=seed,
+            train_dl, test_dl, num_classes = traffic.traffic_data_loader(seed=seed,
                                                                                                     subdata_type=args.sub_dataset,
                                                                                                     task_type=args.task_type,
                                                                                                     batch_size=32)
         elif args.dataset == "partly_cloudy":
-            train_dl, val_dl, test_dl, num_classes = cloudy.cloudy_data_loader(seed=seed,
+            train_dl, test_dl, num_classes = cloudy.cloudy_data_loader(seed=seed,
                                                                                                     subdata_type=args.sub_dataset,
                                                                                                     task_type=args.task_type,
                                                                                                     batch_size=32)
         elif args.dataset == "synthetic":
-            train_dl, val_dl, test_dl, num_classes = synthetic.synthetic_data_loader(seed=seed,
+            train_dl, test_dl, num_classes = synthetic.synthetic_data_loader(seed=seed,
                                                                                                     subdata_type=args.sub_dataset,
                                                                                                     task_type=args.task_type,
                                                                                                     batch_size=32)
         else:
             raise ValueError("Invalid dataset")
 
-        import pdb; pdb.set_trace()
         b0 = next(iter(train_dl))
-        input_dim = int(b0.x.shape[0]/len(b0.y))
+        if len(b0.x.shape) == 1:
+            input_dim = 1
+        else:
+            input_dim = b0.x.shape[1]
 
         if args.model == "GCN":
             model = GCN(in_features = input_dim, hidden_channels = args.hidden_dim, num_classes = num_classes )
@@ -42,8 +45,7 @@ def main(args):
         model = model.to(device)
 
         # Define the optimizer
-        learning_rate = .001
-        optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+        optimizer = torch.optim.Adam(model.parameters(), lr=args.learning_rate)
 
         # Define the loss function
         criterion = torch.nn.CrossEntropyLoss()
@@ -61,15 +63,15 @@ def main(args):
 
                 # Forward pass
                 out = model(b.x, b.edge_index, b.batch)
-                loss = criterion(out, b.y)
+                loss = criterion(out, torch.tensor(b.y).to(device))
 
                 # Backward pass
                 loss.backward()
                 optimizer.step()
 
                 total_loss += loss.item()
-
-            print(f"Epoch {epoch+1}/{args.epochs}, Loss: {total_loss / len(train_dl)}")
+            if epoch%10 ==0 and args.verbose:
+                print(f"Epoch {epoch+1}/{args.epochs}, Loss: {total_loss / len(train_dl)}")
 
         # Testing loop
         model.eval()
@@ -83,10 +85,15 @@ def main(args):
 
                 out = model(b.x, b.edge_index, b.batch)
                 _, predicted = torch.max(out, 1)
+                b.y = torch.tensor(b.y)
                 total += b.y.size(0)
-                correct += (predicted == b.y).sum().item()
-
-        print(f"Accuracy on test set: {100 * correct / total}%")
+                correct += (predicted.detach().cpu() == b.y).sum().item()
+        if args.verbose:
+            print(f"Accuracy on test set: {100 * correct / total}%")
+        total_performance.append(100 * correct / total)
+    overall_acc = np.mean(np.array(total_performance))
+    overall_std = np.std(np.array(total_performance))
+    print(f"Mean overall performance is {overall_acc}, standard dev is {overall_std}")
 
             
 
@@ -99,8 +106,10 @@ if __name__ == "__main__":
     parser.add_argument("--sub_dataset", help="Sub-dataset value depending on the dataset chosen.")
     parser.add_argument("--task_type", type=str,  help="The task type to use for the classification")
     parser.add_argument("--model", type=str, default="GCN", help="Classification model to use")
-    parser.add_argument("--hidden_dim", type=int, default=32, help="Number of hidden channels in the GNN model")
+    parser.add_argument("--hidden_dim", type=int, default=16, help="Number of hidden channels in the GNN model")
     parser.add_argument("--epochs", type=int, default=100, help="Number of epochs to train for")
+    parser.add_argument("--learning_rate", type = float, default = .001, help="Optimizer learning rate")
+    parser.add_argument("--verbose", type=int, default=0, help="Print training, either 0 or 1")
 
     args = parser.parse_args()
 
