@@ -93,7 +93,10 @@ def main(args):
         total_performance.append(100 * correct / total)
     overall_acc = np.mean(np.array(total_performance))
     overall_std = np.std(np.array(total_performance))
-    print(f"Mean overall performance is {overall_acc}, standard dev is {overall_std}")
+    if args.verbose:
+        print(f"Mean overall performance is {overall_acc}, standard dev is {overall_std}")
+    print(f"{overall_acc}, {overall_std}")
+
 
             
 
