@@ -23,8 +23,8 @@ def validate_args(args):
             args.sub_dataset = f"{sub_dataset_val:04}"
         except ValueError:
             raise ValueError("Sub_dataset for dataset 'partly_cloudy' should be an integer between 0 and 154.")
-    if args.dataset == 'synthetic' and args.sub_dataset not in ['bimodal_normal', 'bimodal_camel']:
-        raise ValueError("Invalid sub dataset for dataset synthetic")
+    # if args.dataset == 'synthetic' and args.sub_dataset not in ['bimodal_normal', 'bimodal_camel']:
+    #     raise ValueError("Invalid sub dataset for dataset synthetic")
 
 def main():
     parser = argparse.ArgumentParser(description="Parse arguments for the program.")
@@ -46,7 +46,7 @@ def main():
     dataset_dir = os.path.join(DATA_DIR, args.dataset, args.sub_dataset)
 
     # the processed directory records scattering type and the largest wavelet scale
-    processed_dir = os.path.join(dataset_dir, 'processed', args.scattering_type, f'largest_scale_{args.largest_scale}')
+    processed_dir = os.path.join(dataset_dir, 'processed', args.scattering_type, args.wavelet_type, f'largest_scale_{args.largest_scale}')
     if not os.path.exists(processed_dir):
         os.makedirs(processed_dir)
 
@@ -60,7 +60,6 @@ def main():
         wavelets = wav.get_W_2(A, args.largest_scale, low_pass_as_wavelet=(args.scattering_type == 'blis'))
     else:
         wavelets = wav.get_W_1(A, args.largest_scale, low_pass_as_wavelet=(args.scattering_type == 'blis'))
-    
     st.scattering_transform(x, args.scattering_type, wavelets, args.num_layers, args.highest_moment, processed_dir)
     
 if __name__ == "__main__":

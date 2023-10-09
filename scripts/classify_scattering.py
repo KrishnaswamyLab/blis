@@ -93,7 +93,7 @@ def run_classifier_scattering(args,scattering_dict):
             }
         elif isinstance(base_model, MLPClassifier):
             param_grid = {
-                'model__hidden_layer_sizes': [(50,), (100,), (50, 50)],
+                'model__hidden_layer_sizes': [(50,), (100,), (50, 50), (150, 50)],
                 'model__activation': ['relu'],
                 'model__alpha': [.01]
             }
@@ -105,7 +105,7 @@ def run_classifier_scattering(args,scattering_dict):
         elif isinstance(base_model, xgb.XGBClassifier):
             param_grid = {
                 'model__n_estimators': [50, 100, 150],
-                'model__learning_rate': [0.01, 0.05, 0.1]
+                'model__learning_rate': [0.05, 0.1]
             }
 
         clf = GridSearchCV(pipeline, param_grid, cv = 3)
@@ -152,7 +152,7 @@ if __name__ == "__main__":
                        "moments" : args.moment_list}
     
     final_score, final_stdev, n_comp = run_classifier_scattering(args,scattering_dict)
-    print(f"{final_score},{final_stdev}, {n_comp}")
+    print(f"{final_score},{final_stdev},{n_comp}")
 
     #Example : python classify_scattering.py --dataset=traffic --largest_scale=4 --sub_dataset=PEMS04 --scattering_type=blis --task_type=DAY
     #Example : python classify_scattering.py --dataset=partly_cloudy --sub_dataset=0001 --largest_scale=4 --scattering_type=blis --task_type=EMOTION3 --moment_list 1 --layer_list 1 2 3 --model SVC

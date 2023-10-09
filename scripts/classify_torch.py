@@ -63,7 +63,7 @@ def main(args):
 
                 # Forward pass
                 out = model(b.x, b.edge_index, b.batch)
-                loss = criterion(out, torch.tensor(b.y).to(device))
+                loss = criterion(out, torch.tensor(b.y).long().to(device))
 
                 # Backward pass
                 loss.backward()
@@ -87,7 +87,8 @@ def main(args):
                 _, predicted = torch.max(out, 1)
                 b.y = torch.tensor(b.y)
                 total += b.y.size(0)
-                correct += (predicted.detach().cpu() == b.y).sum().item()
+                #import pdb; pdb.set_trace()
+                correct += (predicted.detach().cpu() == b.y.cpu()).sum().item()
         if args.verbose:
             print(f"Accuracy on test set: {100 * correct / total}%")
         total_performance.append(100 * correct / total)
