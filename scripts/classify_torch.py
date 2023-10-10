@@ -7,7 +7,7 @@ import torch_geometric.transforms as T
 from blis.models.GNN_models import GCN, GAT, GIN
 import argparse
 import numpy as np
-
+import tqdm
 
 def main(args):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -50,13 +50,11 @@ def main(args):
         elif args.model == "GIN":
             model = GIN(in_features = input_dim, hidden_channels = args.hidden_dim, num_classes = num_classes )
         elif args.model == "GPS":
-            # attn type can be "multihead" or "performer"
             model = GPS(in_features = input_dim, 
                         channels = args.hidden_dim, 
                         pe_dim = 8, 
                         num_layers = 2, 
-                        attn_type = "multihead", 
-                        attn_kwargs = {'dropout': 0.5}, 
+                        attn_dropout = 0.5, 
                         num_classes = num_classes )
         else:
             raise ValueError("Invalid model")
@@ -71,7 +69,7 @@ def main(args):
         criterion = torch.nn.CrossEntropyLoss()
 
         # Training loop
-        for epoch in range(args.epochs):
+        for epoch in tqdm.tqdm(range(args.epochs)):
             model.train()
             total_loss = 0
 
@@ -82,8 +80,8 @@ def main(args):
                 optimizer.zero_grad()
 
                 # Forward pass
-                out = model(b.x, b.edge_index, b.batch)
-                loss = criterion(out, torch.tensor(b.y).long().to(device))
+                out = model(b)
+                loss = criterion(out, b.y.to(device))
 
                 # Backward pass
                 loss.backward()
@@ -103,7 +101,7 @@ def main(args):
                 # Move data to the specified device
                 b = b.to(device)
 
-                out = model(b.x, b.edge_index, b.batch)
+                out = model(b)
                 _, predicted = torch.max(out, 1)
                 b.y = torch.tensor(b.y)
                 total += b.y.size(0)

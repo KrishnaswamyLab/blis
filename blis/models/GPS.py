@@ -12,7 +12,7 @@ from torch.nn import (
 )
 
 from torch_geometric.nn import GINEConv, GPSConv, global_add_pool
-from torch_geometric.nn.attention import PerformerAttention
+#from torch_geometric.nn.attention import PerformerAttention
 from typing import Any, Dict, Optional
 
 
@@ -38,11 +38,11 @@ class RedrawProjection:
         self.num_last_redraw += 1
 
 class GPS(torch.nn.Module):
-    def __init__(self, channels: int, pe_dim: int, num_layers: int,
-                 attn_type: str, attn_kwargs: Dict[str, Any]):
+    def __init__(self, in_features: int, channels: int, pe_dim: int, num_layers: int, num_classes:int,
+                 attn_dropout: float):
         super().__init__()
 
-        self.node_emb = Embedding(28, channels - pe_dim)
+        self.node_emb = Linear(in_features, channels - pe_dim)
         self.pe_lin = Linear(20, pe_dim)
         self.pe_norm = BatchNorm1d(20)
         self.edge_emb = Embedding(4, channels)
@@ -54,8 +54,8 @@ class GPS(torch.nn.Module):
                 ReLU(),
                 Linear(channels, channels),
             )
-            conv = GPSConv(channels, GINEConv(nn), heads=4,
-                           attn_type=attn_type, attn_kwargs=attn_kwargs)
+            conv = GPSConv(channels = channels, conv = GINEConv(nn), heads=4,
+                           attn_dropout=attn_dropout)
             self.convs.append(conv)
 
         self.mlp = Sequential(
@@ -63,19 +63,29 @@ class GPS(torch.nn.Module):
             ReLU(),
             Linear(channels // 2, channels // 4),
             ReLU(),
-            Linear(channels // 4, 1),
+            Linear(channels // 4, num_classes),
         )
         self.redraw_projection = RedrawProjection(
             self.convs,
-            redraw_interval=1000 if attn_type == 'performer' else None)
+            redraw_interval=None) #1000 if attn_type == 'performer' else None)
 
-    def forward(self, x, pe, edge_index, edge_attr, batch):
+    def forward(self, data):
+        x = data.x
+        pe = data.pe
+        edge_index = data.edge_index
+        edge_attr = data.edge_attr
+        batch = data.batch
         x_pe = self.pe_norm(pe)
         x = torch.cat((self.node_emb(x.squeeze(-1)), self.pe_lin(x_pe)), 1)
-        edge_attr = self.edge_emb(edge_attr)
+
+        if edge_attr is not None:
+            edge_attr = self.edge_emb(edge_attr)
+        else:
+            edge_attr = self.edge_emb(torch.zeros(len(edge_index[0])).long())
 
         for conv in self.convs:
             x = conv(x, edge_index, batch, edge_attr=edge_attr)
+
         x = global_add_pool(x, batch)
         return self.mlp(x)
 

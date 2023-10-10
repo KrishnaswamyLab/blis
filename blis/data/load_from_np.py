@@ -18,16 +18,17 @@ def create_dataset(X, y, A, transform = None):
     edge_index = adjacency_to_edge_indices(torch.Tensor(A))
     edge_weight = torch.Tensor(A[edge_index[0], edge_index[1]])
     data_list = []
-    
+
+    print("Creating dataset....") 
     for i in range(X.shape[0]):
         num_nodes = X[i].shape[0]
         
-        data = Data(x=torch.Tensor(X[i]), edge_index=edge_index, y=y[i], num_nodes = num_nodes, edge_weight = edge_weight)
+        data = Data(x=torch.Tensor(X[i]), edge_index=edge_index, y=torch.Tensor([y[i]]).long(), num_nodes = num_nodes, edge_weight = edge_weight)
         
         if transform is not None:
             data = transform(data)
         data_list.append(data)
-        
+    print("Done!")
     return data_list
 
 # usage:

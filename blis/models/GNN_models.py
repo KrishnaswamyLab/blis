@@ -15,7 +15,12 @@ class GCN(nn.Module):
         self.final_nonlin = nn.Softmax(dim = 1)
         self.in_features = in_features
     
-    def forward(self, x, edge_index, batch):
+    def forward(self, data):
+
+        x = data.x
+        edge_index = data.edge_index
+        batch = data.batch
+    
         if self.in_features == 1:
             x = x[:,None]
         #x = x[:,None]
@@ -47,7 +52,11 @@ class GIN(nn.Module):
         self.final_nonlin = nn.Softmax(dim=1)
         self.in_features = in_features
 
-    def forward(self, x, edge_index, batch):
+    def forward(self, data):
+        x = data.x
+        edge_index = data.edge_index
+        batch = data.batch
+
         if self.in_features == 1:
             x = x[:,None]
         x = self.conv1(x, edge_index)
@@ -73,7 +82,11 @@ class GAT(nn.Module):
         self.final_nonlin = nn.Softmax(dim=1)
         self.in_features = 1
 
-    def forward(self, x, edge_index, batch):
+    def forward(self, data):
+        x = data.x
+        edge_index = data.edge_index
+        batch = data.batch
+        
         if self.in_features==1:
             x = x[:,None]
         x = self.conv1(x, edge_index)
