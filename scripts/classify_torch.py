@@ -11,6 +11,7 @@ import tqdm
 
 def main(args):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    #device = torch.device("cpu")
     total_performance = []
     for seed in [42,43,44,45,56]:
 

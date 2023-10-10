@@ -51,6 +51,7 @@ def main():
         os.makedirs(processed_dir)
 
     # load adjacency matrix and signal
+    import pdb; pdb.set_trace()
     A = np.load(os.path.join(dataset_dir, 'adjacency_matrix.npy'))
     x = np.load(os.path.join(dataset_dir, 'graph_signals.npy'))
     if len(x.shape) == 2:
