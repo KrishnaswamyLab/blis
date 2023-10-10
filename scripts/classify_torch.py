@@ -1,28 +1,36 @@
 from blis.data import traffic, cloudy, synthetic
 from blis.models.GCN import GCN
+from blis.models.GPS import GPS
 import argparse
 import torch
+import torch_geometric.transforms as T
+
 
 
 def main(args):
 
     for seed in [42,43,44,45,56]:
 
+        if args.model == "GPS":
+            transform = transform = T.AddRandomWalkPE(walk_length=20, attr_name='pe')
+        else:
+            transform = None
+
         if args.dataset == "traffic":
             train_dl, val_dl, test_dl, num_classes = traffic.traffic_data_loader(seed=seed,
                                                                                                     subdata_type=args.sub_dataset,
                                                                                                     task_type=args.task_type,
-                                                                                                    batch_size=32)
+                                                                                                    batch_size=32, transform = transform)
         elif args.dataset == "partly_cloudy":
             train_dl, val_dl, test_dl, num_classes = cloudy.cloudy_data_loader(seed=seed,
                                                                                                     subdata_type=args.sub_dataset,
                                                                                                     task_type=args.task_type,
-                                                                                                    batch_size=32)
+                                                                                                    batch_size=32, transform = transform)
         elif args.dataset == "synthetic":
             train_dl, val_dl, test_dl, num_classes = synthetic.synthetic_data_loader(seed=seed,
                                                                                                     subdata_type=args.sub_dataset,
                                                                                                     task_type=args.task_type,
-                                                                                                    batch_size=32)
+                                                                                                    batch_size=32, transform = transform)
         else:
             raise ValueError("Invalid dataset")
 
@@ -32,6 +40,15 @@ def main(args):
 
         if args.model == "GCN":
             model = GCN(in_features = input_dim, hidden_channels = args.hidden_dim, num_classes = num_classes )
+        elif args.model == "GPS":
+            # attn type can be "multihead" or "performer"
+            model = GPS(in_features = input_dim, 
+                        channels = args.hidden_dim, 
+                        pe_dim = 8, 
+                        num_layers = 2, 
+                        attn_type = "multihead", 
+                        attn_kwargs = {'dropout': 0.5}, 
+                        num_classes = num_classes )
         
         for epoch in range(args.epochs):
 

@@ -17,9 +17,9 @@ def synthetic_data_loader(seed, subdata_type, task_type, batch_size):
     signal_path = os.path.join(DATA_DIR,"synthetic",subdata_type,"graph_signals.npy")
 
     # Load data
-    X = np.load(signal_path)
-    y = np.load(label_path)
-    A = np.load(graph_path)
+    X = np.load(signal_path, allow_pickle=True)
+    y = np.load(label_path, allow_pickle=True)
+    A = np.load(graph_path, allow_pickle=True)
 
     data = create_dataset(X, y, A)
 
