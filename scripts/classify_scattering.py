@@ -141,6 +141,7 @@ if __name__ == "__main__":
     parser.add_argument("--model", choices=['RF', 'SVC', 'KNN', 'MLP', 'LR','XGB'], type=str, default="LR", help="Classification model to use. Options: 'RF', 'SVC', 'KNN', 'MLP', 'LR','XGB'")
     parser.add_argument("--task_type", type=str,  help="The task type to use for the classification")
     parser.add_argument("--PCA_variance", type=float, default=1, help="PCA variance to retain (int between 0 and 1, default: 1)")
+    parser.add_argument("--wavelet_type", choices=['W1','W2'], default = 'W2', help='Type of wavelet, either W1 or W2')
 
     args = parser.parse_args()
     if not 0 < args.PCA_variance <= 1:
@@ -149,7 +150,8 @@ if __name__ == "__main__":
     scattering_dict = {"scattering_type": args.scattering_type,
                        "scale_type": f"largest_scale_{args.largest_scale}",
                        "layers": args.layer_list,
-                       "moments" : args.moment_list}
+                       "moments" : args.moment_list,
+                       "wavelet_type": args.wavelet_type}
     
     final_score, final_stdev, n_comp = run_classifier_scattering(args,scattering_dict)
     print(f"{final_score},{final_stdev},{n_comp}")

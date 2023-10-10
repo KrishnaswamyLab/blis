@@ -54,6 +54,7 @@ def cloudy_scattering_data_loader(seed, subdata_type, task_type, batch_size = 32
     label_path = os.path.join(DATA_DIR,"partly_cloudy",subdata_type,task_type,"label.npy")
     layer_paths = [os.path.join(DATA_DIR,"partly_cloudy",subdata_type,"processed",
                                 scattering_dict["scattering_type"],
+                                scattering_dict["wavelet_type"],
                                 scattering_dict["scale_type"],
                                 f"layer_{layer}") for layer in scattering_dict["layers"]]
    
