@@ -3,7 +3,7 @@ import numpy as np
 import numpy.linalg as LA
 
 def get_P(A: np.ndarray) -> np.ndarray:
-    d_arr = np.sum(A, axis=1)
+    d_arr = np.sum(A, axis=0)
     d_arr_inv = 1/d_arr
     d_arr_inv[np.isinf(d_arr_inv)] = 0
     D_inv = np.diag(d_arr_inv)
