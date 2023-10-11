@@ -5,6 +5,7 @@ import torch
 import torch_geometric.transforms as T
 
 from blis.models.GNN_models import GCN, GAT, GIN
+from blis.models.blis_legs_layer import BlisNet
 import argparse
 import numpy as np
 import tqdm
@@ -56,6 +57,14 @@ def main(args):
                         num_layers = 2, 
                         attn_dropout = 0.5, 
                         num_classes = num_classes )
+        
+        elif args.model == "BlisNet":
+            model = BlisNet(in_channels = input_dim, 
+                        hidden_channels = args.hidden_dim, 
+                        layout = ['blis','blis','dim_reduction','gcn'],
+                        out_channels = num_classes,
+                        edge_in_channels = None,
+                        trainable_laziness=False )
         else:
             raise ValueError("Invalid model")
         

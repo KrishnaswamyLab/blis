@@ -9,6 +9,9 @@ from torch_geometric.utils import degree
 from torch_geometric.utils.num_nodes import maybe_num_nodes
 from torch_scatter import scatter_add
 import torch_geometric
+from torch_geometric.nn.norm import BatchNorm
+from torch_geometric.nn.pool import global_mean_pool
+from torch_geometric.nn import GCNConv
 
 device = torch.device("cpu")
 
@@ -170,7 +173,62 @@ class Blis(torch.nn.Module):
     
     def out_features(self):
         return 12 * self.in_channels
-    
+
+class BlisNet(torch.nn.Module):
+
+    def __init__(self, in_channels, hidden_channels, out_channels, edge_in_channels = None, trainable_laziness=False, layout = ['blis','gcn','gcn'],  **kwargs):
+
+        super().__init__()
+        self.in_channels = in_channels
+        self.out_channels = out_channels
+        self.edge_in_channels = edge_in_channels
+        self.trainable_laziness = trainable_laziness
+
+        self.layout = layout
+        self.layers = []
+        self.out_dimensions = [in_channels]
+
+        for layout_ in layout:
+            if layout_ == 'blis':
+                self.layers.append(Blis(self.out_dimensions[-1], trainable_laziness=trainable_laziness))
+                self.out_dimensions.append(self.layers[-1].out_features())
+            elif layout_ == 'gcn':
+                self.layers.append(GCNConv(self.out_dimensions[-1], hidden_channels))
+                self.out_dimensions.append(hidden_channels)
+            elif layout_ == 'dim_reduction':
+                self.layers.append(nn.Linear(self.out_dimensions[-1], hidden_channels))
+                self.out_dimensions.append(hidden_channels)
+        
+        self.batch_norm = BatchNorm(self.out_dimensions[-1])
+        self.lin1 = Linear(self.out_dimensions[-1], self.out_dimensions[-1]//2 )
+        self.mean = global_mean_pool
+        self.lin2 = Linear(self.out_dimensions[-1]//2, out_channels)
+        self.lin3 = Linear(out_channels, out_channels)
+
+        self.act = torch.nn.ReLU()
+
+
+    def forward(self, data):
+
+        for il, layer in enumerate(self.layers):
+            if self.layout[il] == "blis":
+                x = layer(data).reshape(data.x.shape[0],-1)
+            elif self.layout[il] == "dim_reduction":
+                x = layer(data.x)
+            else:
+                x = layer(data.x, data.edge_index)
+            data.x =x
+        
+        x = self.batch_norm(data.x)
+        x = self.lin1(x)
+        x = self.act(x)
+        x = self.mean(x,data.batch)
+        x = self.lin2(x)
+        x = self.act(x)
+        x = self.lin3(x)
+
+        return x
+
 
 if __name__ == "__main__":
     print("Testing the BLIS Legs module")
