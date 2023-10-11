@@ -62,7 +62,7 @@ def main(args):
         elif args.model == "BlisNet":
             model = BlisNet(in_channels = input_dim, 
                         hidden_channels = args.hidden_dim, 
-                        layout = ['blis','blis','dim_reduction','gcn'],
+                        layout = args.layout,
                         out_channels = num_classes,
                         edge_in_channels = None,
                         trainable_laziness=False )
@@ -132,6 +132,13 @@ def main(args):
             
 
 if __name__ == "__main__":
+
+    def csv_to_list(csv_str):
+        if not csv_str:
+            return []
+        return csv_str.split(',')
+
+
     parser = argparse.ArgumentParser(description="Parse arguments for the program.")
 
     parser.add_argument("--dataset", choices=['traffic', 'partly_cloudy', 'synthetic'], help="Dataset: 'traffic' or 'partly_cloudy' or 'synthetic'.")
@@ -142,6 +149,8 @@ if __name__ == "__main__":
     parser.add_argument("--epochs", type=int, default=100, help="Number of epochs to train for")
     parser.add_argument("--learning_rate", type = float, default = .001, help="Optimizer learning rate")
     parser.add_argument("--verbose", type=int, default=0, help="Print training, either 0 or 1")
+    parser.add_argument('--layout', type=csv_to_list, help='Layout to use for the BliNet experiments e.g. blis,blis,dim_reduction,gcn')
+
 
     args = parser.parse_args()
 
