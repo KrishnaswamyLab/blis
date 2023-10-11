@@ -21,7 +21,7 @@ def synthetic_data_loader(seed, subdata_type, task_type, batch_size, transform=N
     y = np.load(label_path, allow_pickle=True)
     A = np.load(graph_path, allow_pickle=True)
 
-    data = create_dataset(X, y, A)
+    data = create_dataset(X, y, A, transform = transform) 
 
     train_idx, test_idx = train_test_split(np.arange(len(data)), test_size=0.3, random_state=seed)
 
