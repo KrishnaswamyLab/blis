@@ -56,7 +56,7 @@ class GIN(nn.Module):
         edge_index = data.edge_index
         batch = data.batch
 
-        if self.in_features == 1:
+        if len(x.shape) == 1:
             x = x[:,None]
         x = self.conv1(x, edge_index)
         x = x.relu()
@@ -86,7 +86,7 @@ class GAT(nn.Module):
         edge_index = data.edge_index
         batch = data.batch
         
-        if self.in_features==1:
+        if len(x.shape) == 1:
             x = x[:,None]
         x = self.conv1(x, edge_index)
         x = F.elu(x)

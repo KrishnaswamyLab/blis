@@ -16,7 +16,7 @@ def main(args):
     for seed in [42,43,44,45,56]:
 
         if args.model == "GPS":
-            transform = transform = T.AddRandomWalkPE(walk_length=20, attr_name='pe')
+            transform = T.AddRandomWalkPE(walk_length=20, attr_name='pe')
         else:
             transform = None
 
