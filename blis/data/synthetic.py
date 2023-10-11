@@ -10,7 +10,7 @@ from blis import DATA_DIR
 from blis.data.load_from_np import create_dataset
 
 
-def synthetic_data_loader(seed, subdata_type, task_type, batch_size):
+def synthetic_data_loader(seed, subdata_type, task_type, batch_size, transform=None):
     
     label_path = os.path.join(DATA_DIR,"synthetic",subdata_type,task_type,"label.npy")
     graph_path = os.path.join(DATA_DIR,"synthetic",subdata_type,"adjacency_matrix.npy")
@@ -21,7 +21,7 @@ def synthetic_data_loader(seed, subdata_type, task_type, batch_size):
     y = np.load(label_path, allow_pickle=True)
     A = np.load(graph_path, allow_pickle=True)
 
-    data = create_dataset(X, y, A)
+    data = create_dataset(X, y, A, transform = transform) 
 
     train_idx, test_idx = train_test_split(np.arange(len(data)), test_size=0.3, random_state=seed)
 

@@ -10,7 +10,7 @@ from blis import DATA_DIR
 from blis.data.load_from_np import create_dataset
 
 
-def cloudy_data_loader(seed, subdata_type, task_type, batch_size = 32):
+def cloudy_data_loader(seed, subdata_type, task_type, batch_size = 32, transform=None):
     
     label_path = os.path.join(DATA_DIR,"partly_cloudy",subdata_type,task_type,"label.npy")
     graph_path = os.path.join(DATA_DIR,"partly_cloudy",subdata_type,"adjacency_matrix.npy")
@@ -22,7 +22,7 @@ def cloudy_data_loader(seed, subdata_type, task_type, batch_size = 32):
     y = np.load(label_path)
     A = np.load(graph_path)
     #import pdb; pdb.set_trace()
-    data = create_dataset(X, y, A)
+    data = create_dataset(X, y, A, transform = transform)
 
     train_idx, test_idx = train_test_split(np.arange(len(data)), test_size=0.3, random_state=seed)
 

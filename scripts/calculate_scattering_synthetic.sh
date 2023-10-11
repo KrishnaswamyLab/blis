@@ -1,7 +1,7 @@
 #!/bin/bash
 
-#SBATCH --job-name=scattering_coefs_synthetic
-#SBATCH --output=job_outputs/scattering_coefs_synthetic_%A_%a.txt
+#SBATCH --job-name=synthetic_scattering_W2
+#SBATCH --output=job_outputs/synthetic_scattering_%A_%a.txt
 #SBATCH --array=0-19  # For 20 jobs in total
 #SBATCH --mem=16G
 #SBATCH --reservation=sumry2023

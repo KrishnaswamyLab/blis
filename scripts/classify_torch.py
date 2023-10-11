@@ -12,11 +12,12 @@ import tqdm
 
 def main(args):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    #device = torch.device("cpu")
     total_performance = []
     for seed in [42,43,44,45,56]:
 
         if args.model == "GPS":
-            transform = transform = T.AddRandomWalkPE(walk_length=20, attr_name='pe')
+            transform = T.AddRandomWalkPE(walk_length=20, attr_name='pe')
         else:
             transform = None
 
