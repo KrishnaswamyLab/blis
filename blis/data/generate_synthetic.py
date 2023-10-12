@@ -8,7 +8,7 @@ from sklearn.neighbors import kneighbors_graph
 
 def gaussian(cx, cy, sdx, sdy, locx, locy):
   # centers and loc are tuples
-  return np.exp( -((cx - locx)**2/(2 * sdx)**2 + (cy- locy)**2 / (2 * sdy)**2))
+  return np.exp( -((cx - locx)**2/(2 * sdx**2) + (cy- locy)**2 / (2 * sdy**2)) )
 
 # x,y in [0,1]^2, samples f(I x I) -> R
 def add_gaussian(vertices, seed):
@@ -103,7 +103,7 @@ if __name__ == "__main__":
         LARGEST_SCALE = 4
         NUM_LAYERS = 3
         DECIMAL = 2
-        K = 6   # k-nearest neighbors to create the graph 
+        K = 5   # k-nearest neighbors to create the graph 
         SIGMA = 0.25
         NUM_SIGNALS_TO_GEN = 200
         TEST_SIZE = 0.60

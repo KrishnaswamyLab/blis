@@ -119,6 +119,7 @@ class Blis(torch.nn.Module):
     def __init__(self, in_channels, trainable_laziness=False, trainable_scales = False, activation = "blis"):
 
         super().__init__()
+        device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.in_channels = in_channels
         self.trainable_laziness = trainable_laziness
         self.diffusion_layer1 = Diffuse(in_channels, in_channels, trainable_laziness)
@@ -162,7 +163,6 @@ class Blis(torch.nn.Module):
         # filter3 = avgs[4] - avgs[8]
         # filter4 = avgs[8] - avgs[16] 
         # filter5 = avgs[16]
-
         wavelet_coeffs = torch.einsum("ij,jklm->iklm", self.wavelet_constructor, diffusion_levels) # J x num_nodes x num_features x 1
         #subtracted = subtracted.view(6, x.shape[0], x.shape[1]) # reshape into given input shape
         activated = [self.activations[i](wavelet_coeffs) for i in range(len(self.activations))]
@@ -185,6 +185,7 @@ class BlisNet(torch.nn.Module):
         self.trainable_laziness = trainable_laziness
 
         self.layout = layout
+        #self.layers = nn.ModuleList()
         self.layers = []
         self.out_dimensions = [in_channels]
 
@@ -196,9 +197,9 @@ class BlisNet(torch.nn.Module):
                 self.layers.append(GCNConv(self.out_dimensions[-1], hidden_channels))
                 self.out_dimensions.append(hidden_channels)
             elif layout_ == 'dim_reduction':
-                self.layers.append(nn.Linear(self.out_dimensions[-1], hidden_channels))
+                self.layers.append(Linear(self.out_dimensions[-1], hidden_channels))
                 self.out_dimensions.append(hidden_channels)
-        
+        self.layers = nn.ModuleList(self.layers)
         self.batch_norm = BatchNorm(self.out_dimensions[-1])
         self.lin1 = Linear(self.out_dimensions[-1], self.out_dimensions[-1]//2 )
         self.mean = global_mean_pool
@@ -211,6 +212,7 @@ class BlisNet(torch.nn.Module):
     def forward(self, data):
 
         for il, layer in enumerate(self.layers):
+            #import pdb; pdb.set_trace()
             if self.layout[il] == "blis":
                 x = layer(data).reshape(data.x.shape[0],-1)
             elif self.layout[il] == "dim_reduction":
