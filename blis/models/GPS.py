@@ -76,7 +76,10 @@ class GPS(torch.nn.Module):
         edge_attr = data.edge_attr
         batch = data.batch
         x_pe = self.pe_norm(pe)
-        x = torch.cat((self.node_emb(x.squeeze(-1)), self.pe_lin(x_pe)), 1)
+        if len(x.shape) == 1:
+            x = x.unsqueeze(-1)
+        
+        x = torch.cat((self.node_emb(x), self.pe_lin(x_pe)), 1)
 
         if edge_attr is not None:
             edge_attr = self.edge_emb(edge_attr)

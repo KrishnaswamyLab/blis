@@ -127,10 +127,6 @@ def main(args):
     print(f"{overall_acc}, {overall_std}")
 
 
-            
-
-            
-
 if __name__ == "__main__":
 
     def csv_to_list(csv_str):
