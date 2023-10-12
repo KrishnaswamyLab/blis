@@ -47,6 +47,8 @@ def run_classifier_scattering(args,scattering_dict):
         X_test = X_test.reshape(X_test.shape[0],-1)
         n_comp = -1
         if (args.PCA_variance != 1):
+            if args.PCA_variance > 1:
+                args.PCA_variance = int(args.PCA_variance)
             pca = PCA(n_components=args.PCA_variance)
             X_train = pca.fit_transform(X_train)
             X_test = pca.transform(X_test)
@@ -144,8 +146,6 @@ if __name__ == "__main__":
     parser.add_argument("--wavelet_type", choices=['W1','W2'], default = 'W2', help='Type of wavelet, either W1 or W2')
 
     args = parser.parse_args()
-    if not 0 < args.PCA_variance <= 1:
-        raise ValueError("PCA variance should be between 0 and 1")
 
     scattering_dict = {"scattering_type": args.scattering_type,
                        "scale_type": f"largest_scale_{args.largest_scale}",
