@@ -41,8 +41,6 @@ def run_classifier_scattering(args,scattering_dict):
         else:
             raise ValueError("Invalid dataset")
 
-
-
         X_train = X_train.reshape(X_train.shape[0],-1) 
         X_test = X_test.reshape(X_test.shape[0],-1)
         n_comp = -1

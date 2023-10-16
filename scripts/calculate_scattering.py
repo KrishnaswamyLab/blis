@@ -14,7 +14,7 @@ def validate_args(args):
     if args.dataset == 'traffic' and args.sub_dataset not in ['PEMS08', 'PEMS07', 'PEMS04', 'PEMS03']:
         raise ValueError("Invalid sub_dataset for dataset 'traffic'.")
     # Check if dataset is 'partly_cloudy' and sub_dataset is valid
-    if args.dataset == 'partly_cloudy':
+    if args.dataset == 'partly_cloudy' and args.sub_dataset != 'full_data':
         try:
             sub_dataset_val = int(args.sub_dataset)
             if not (0 <= sub_dataset_val <= 154):

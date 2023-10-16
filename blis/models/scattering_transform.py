@@ -30,9 +30,23 @@ def scattering_transform(x, scattering_type, wavelets, num_layers, highest_momen
     
     J = len(wavelets)
     
+    # save the zero order scattering coefficients:
+    zero_save_dir = os.path.join(save_dir, f'layer_0')
+    if not os.path.exists(zero_save_dir):
+        os.makedirs(zero_save_dir)
+    for moment_ind in range(highest_moment):
+        full_path = os.path.join(zero_save_dir, f"moment_{moment_ind + 1}.npy")
+        coeffs_zero = np.zeros((num_signals, 1, num_features, highest_moment))
+
+        for moment in range(1, highest_moment + 1):
+            coeffs_zero[:, 0, :, moment-1] = np.sum(np.power(x, moment), axis = 1)  
+
+            np.save(full_path, coeffs_zero[:,:,:,moment_ind])
+
     # num_layers is the LARGEST layer size
     # layer_num is the largest layer size within the loop
     # layer is the layer number looping up to layer_num 
+    
     for layer_num in range(1, num_layers+1):
 
         if save_dir is not None:
@@ -78,4 +92,4 @@ def scattering_transform(x, scattering_type, wavelets, num_layers, highest_momen
                 full_path = os.path.join(layer_dir, f"moment_{moment_ind + 1}.npy")
                 np.save(full_path, coeffs[:,:,:, moment_ind])
 
-    return coeffs     
+    #return coeffs     

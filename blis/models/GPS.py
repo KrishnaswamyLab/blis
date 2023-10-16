@@ -84,7 +84,7 @@ class GPS(torch.nn.Module):
         if edge_attr is not None:
             edge_attr = self.edge_emb(edge_attr)
         else:
-            edge_attr = self.edge_emb(torch.zeros(len(edge_index[0])).long())
+            edge_attr = self.edge_emb(torch.zeros(len(edge_index[0]),device=x.device).long())
 
         for conv in self.convs:
             x = conv(x, edge_index, batch, edge_attr=edge_attr)

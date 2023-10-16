@@ -58,7 +58,6 @@ def cloudy_scattering_data_loader(seed, subdata_type, task_type, batch_size = 32
                                 scattering_dict["scale_type"],
                                 f"layer_{layer}") for layer in scattering_dict["layers"]]
    
-    
     moments = []
     for layer_path in layer_paths:
         for moment in scattering_dict["moments"]:

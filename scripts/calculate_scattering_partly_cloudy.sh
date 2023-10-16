@@ -1,7 +1,7 @@
 #!/bin/bash
 
-#SBATCH --job-name=W1_cloudy_scattering
-#SBATCH --output=job_outputs/cloudy_scattering_%A_%a.txt
+#SBATCH --job-name=actually_W1_cloudy_scattering
+#SBATCH --output=job_outputs/W1_cloudy_scattering_%A_%a.txt
 #SBATCH --array=0-309  # 2 scattering types * 155 datasets = 310 tasks, 0-indexed hence 0-309
 #SBATCH --mem=8G
 #SBATCH --reservation=sumry2023
