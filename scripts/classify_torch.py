@@ -4,7 +4,7 @@ import argparse
 import torch
 import torch_geometric.transforms as T
 
-from blis.models.GNN_models import GCN, GAT, GIN, GNNML1
+from blis.models.GNN_models import GCN, GAT, GIN, GNNML1, ChebNet
 from blis.models.blis_legs_layer import BlisNet
 import argparse
 import numpy as np
@@ -18,6 +18,8 @@ def main(args):
 
         if args.model == "GPS":
             transform = T.AddRandomWalkPE(walk_length=20, attr_name='pe')
+        elif args.model == "ChebNet":
+            transform = T.LaplacianLambdaMax(normalization="sym", is_undirected = True) # Check that all graphs are indeed undirected.
         else:
             transform = None
 
@@ -64,6 +66,9 @@ def main(args):
                         num_classes = num_classes)
         elif args.model == "GNNML3":
             raise ValueError("Not implemented yet !!! todo")
+        
+        elif args.model == "ChebNet":
+            model = ChebNet(in_features = input_dim, hidden_channels = args.hidden_dim, num_classes = num_classes )
         
         elif args.model == "BlisNet":
             model = BlisNet(in_channels = input_dim, 

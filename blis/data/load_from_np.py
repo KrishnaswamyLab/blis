@@ -25,7 +25,7 @@ def create_dataset(X, y, A, transform = None):
         num_nodes = X[i].shape[0]
         
         data = Data(x=torch.Tensor(X[i]), edge_index=edge_index, y=torch.Tensor([y[i]]).long(), num_nodes = num_nodes, edge_weight = edge_weight)
-        
+
         if transform is not None:
             data = transform(data)
         data_list.append(data)

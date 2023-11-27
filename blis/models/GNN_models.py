@@ -1,7 +1,7 @@
 import torch.nn as nn
 import torch.nn.functional as F
 from torch_geometric.data import Data, DataLoader
-from torch_geometric.nn import GCNConv, GATConv
+from torch_geometric.nn import GCNConv, GATConv, ChebConv
 from torch_geometric.nn import GINConv, global_mean_pool
 from torch.nn import Sequential, Linear, ReLU
 from blis.models.spectral_conv import SpectConv
@@ -100,7 +100,31 @@ class GAT(nn.Module):
 
         return x
     
+class ChebNet(nn.Module):
+    def __init__(self,in_features, hidden_channels, num_classes, S=5):
+        super(ChebNet, self).__init__()
 
+        self.conv1 = ChebConv(in_features, 32,S)
+        self.conv2 = ChebConv(32, hidden_channels, S)
+        self.conv3 = ChebConv(hidden_channels, hidden_channels, S)        
+        self.fc1 = torch.nn.Linear(hidden_channels, 10)
+        self.fc2 = torch.nn.Linear(10, num_classes)
+        
+    def forward(self, data):
+        x=data.x
+
+        if len(x.shape)==1:
+            x=x[:,None]
+        edge_index=data.edge_index
+        
+        x = F.relu(self.conv1(x, edge_index,lambda_max=data.lambda_max,batch=data.batch))              
+        x = F.relu(self.conv2(x, edge_index,lambda_max=data.lambda_max,batch=data.batch))        
+        x = F.relu(self.conv3(x, edge_index,lambda_max=data.lambda_max,batch=data.batch))
+        x = global_mean_pool(x, data.batch)
+        x = F.relu(self.fc1(x))
+        return self.fc2(x)
+
+    
 class GNNML1(nn.Module):
     def __init__(self, in_features, hidden_channels = 64, num_classes = 1):
         super(GNNML1, self).__init__()
