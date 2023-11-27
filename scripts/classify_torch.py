@@ -62,6 +62,8 @@ def main(args):
             model = GNNML1(in_features = input_dim,
                         hidden_channels = args.hidden_dim,
                         num_classes = num_classes)
+        elif args.model == "GNNML3":
+            raise ValueError("Not implemented yet !!! todo")
         
         elif args.model == "BlisNet":
             model = BlisNet(in_channels = input_dim, 
