@@ -142,7 +142,6 @@ class GNNML1(nn.Module):
         self.conv21 = SpectConv(nin, nout, selfconn=False)
         self.conv31 = SpectConv(nin, nout, selfconn=False)
         
-        
         self.fc11 = torch.nn.Linear(in_features, nout)
         self.fc21 = torch.nn.Linear(nin, nout)
         self.fc31 = torch.nn.Linear(nin, nout)
@@ -155,7 +154,6 @@ class GNNML1(nn.Module):
         self.fc23 = torch.nn.Linear(nin, nout)
         self.fc33 = torch.nn.Linear(nin, nout)
         
- 
         self.fc1 = torch.nn.Linear(nin, 10)
         self.fc2 = torch.nn.Linear(10, num_classes)
         
