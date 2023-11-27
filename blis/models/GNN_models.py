@@ -4,7 +4,8 @@ from torch_geometric.data import Data, DataLoader
 from torch_geometric.nn import GCNConv, GATConv
 from torch_geometric.nn import GINConv, global_mean_pool
 from torch.nn import Sequential, Linear, ReLU
-
+from blis.models.spectral_conv import SpectConv
+import torch
 
 class GCN(nn.Module):
     def __init__(self, in_features,hidden_channels, num_classes):
@@ -98,3 +99,96 @@ class GAT(nn.Module):
         x = self.lin(x)
 
         return x
+    
+
+class GNNML1(nn.Module):
+    def __init__(self, in_features, hidden_channels = 64, num_classes = 1):
+        super(GNNML1, self).__init__()
+        
+        # number of neuron
+        nout=hidden_channels   
+        # three part concatenate or sum?
+        self.concat=False
+
+        if self.concat:
+            nin=3*nout
+        else:
+            nin=nout
+        self.conv11 = SpectConv(in_features, nout,selfconn=False)
+        self.conv21 = SpectConv(nin, nout, selfconn=False)
+        self.conv31 = SpectConv(nin, nout, selfconn=False)
+        
+        
+        self.fc11 = torch.nn.Linear(in_features, nout)
+        self.fc21 = torch.nn.Linear(nin, nout)
+        self.fc31 = torch.nn.Linear(nin, nout)
+        
+        self.fc12 = torch.nn.Linear(in_features, nout)
+        self.fc22 = torch.nn.Linear(nin, nout)
+        self.fc32 = torch.nn.Linear(nin, nout)
+
+        self.fc13 = torch.nn.Linear(in_features, nout)
+        self.fc23 = torch.nn.Linear(nin, nout)
+        self.fc33 = torch.nn.Linear(nin, nout)
+        
+ 
+        self.fc1 = torch.nn.Linear(nin, 10)
+        self.fc2 = torch.nn.Linear(10, num_classes)
+        
+
+    def forward(self, data):
+
+        x=data.x
+
+        if len(x.shape)==1:
+            x=x[:,None]
+              
+        edge_index=data.edge_index
+        edge_attr=torch.ones(edge_index.shape[1],1)
+        
+        if self.concat:
+            x = torch.cat([F.relu(self.fc11(x)), F.relu(self.conv11(x, edge_index,edge_attr)),F.relu(self.fc12(x)*self.fc13(x))],1)
+            x = torch.cat([F.relu(self.fc21(x)), F.relu(self.conv21(x, edge_index,edge_attr)),F.relu(self.fc22(x)*self.fc23(x))],1)
+            x = torch.cat([F.relu(self.fc31(x)), F.relu(self.conv31(x, edge_index,edge_attr)),F.relu(self.fc32(x)*self.fc33(x))],1)
+        else:            
+            x = F.relu(self.fc11(x)+self.conv11(x, edge_index,edge_attr)+self.fc12(x)*self.fc13(x))
+            x = F.relu(self.fc21(x)+self.conv21(x, edge_index,edge_attr)+self.fc22(x)*self.fc23(x))
+            x = F.relu(self.fc31(x)+self.conv31(x, edge_index,edge_attr)+self.fc32(x)*self.fc33(x))
+        
+
+        x = global_mean_pool(x, data.batch)
+        x = self.fc1(x)
+        return self.fc2(x)
+
+class GNNML3(nn.Module):
+    def __init__(self):
+        super(GNNML3, self).__init__()
+
+        # number of neuron for for part1 and part2
+        nout1=32
+        nout2=16
+
+        nin=nout1+nout2
+        ne=dataset.data.edge_attr2.shape[1]
+        ninp=dataset.num_features
+
+        self.conv1=ML3Layer(learnedge=True,nedgeinput=ne,nedgeoutput=ne,ninp=ninp,nout1=nout1,nout2=nout2)
+        self.conv2=ML3Layer(learnedge=True,nedgeinput=ne,nedgeoutput=ne,ninp=nin ,nout1=nout1,nout2=nout2)
+        self.conv3=ML3Layer(learnedge=True,nedgeinput=ne,nedgeoutput=ne,ninp=nin ,nout1=nout1,nout2=nout2) 
+        
+        self.fc1 = torch.nn.Linear(nin, 10)
+        self.fc2 = torch.nn.Linear(10, 1)
+        
+
+    def forward(self, data):
+        x=data.x
+        edge_index=data.edge_index2
+        edge_attr=data.edge_attr2
+
+        x=(self.conv1(x, edge_index,edge_attr))
+        x=(self.conv2(x, edge_index,edge_attr))
+        x=(self.conv3(x, edge_index,edge_attr))  
+
+        x = global_mean_pool(x, data.batch)
+        x = F.relu(self.fc1(x))
+        return self.fc2(x)

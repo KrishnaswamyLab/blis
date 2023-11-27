@@ -4,7 +4,7 @@ import argparse
 import torch
 import torch_geometric.transforms as T
 
-from blis.models.GNN_models import GCN, GAT, GIN
+from blis.models.GNN_models import GCN, GAT, GIN, GNNML1
 from blis.models.blis_legs_layer import BlisNet
 import argparse
 import numpy as np
@@ -58,6 +58,10 @@ def main(args):
                         num_layers = 2, 
                         attn_dropout = 0.5, 
                         num_classes = num_classes )
+        elif args.model == "GNNML1":
+            model = GNNML1(in_features = input_dim,
+                        hidden_channels = args.hidden_dim,
+                        num_classes = num_classes)
         
         elif args.model == "BlisNet":
             model = BlisNet(in_channels = input_dim, 
