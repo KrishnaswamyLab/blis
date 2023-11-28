@@ -4,11 +4,13 @@ import argparse
 import torch
 import torch_geometric.transforms as T
 
-from blis.models.GNN_models import GCN, GAT, GIN, GNNML1, ChebNet
+from blis.models.GNN_models import GCN, GAT, GIN, GNNML1, ChebNet, MLP
 from blis.models.blis_legs_layer import BlisNet
 import argparse
 import numpy as np
 import tqdm
+import os 
+import pandas as pd
 
 def main(args):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -44,13 +46,15 @@ def main(args):
         b0 = next(iter(train_dl))
         if len(b0.x.shape) == 1:
             input_dim = 1
+            mlp_in_dim = b0.x.shape[0]
         else:
             input_dim = b0.x.shape[1]
+            mlp_in_dim = b0.x.shape[0] * b0.x.shape[1]
 
         if args.model == "GCN":
             model = GCN(in_features = input_dim, hidden_channels = args.hidden_dim, num_classes = num_classes )
         elif args.model == "GAT":
-            model = GCN(in_features = input_dim, hidden_channels = args.hidden_dim, num_classes = num_classes )
+            model = GAT(in_features = input_dim, hidden_channels = args.hidden_dim, num_classes = num_classes )
         elif args.model == "GIN":
             model = GIN(in_features = input_dim, hidden_channels = args.hidden_dim, num_classes = num_classes )
         elif args.model == "GPS":
@@ -77,6 +81,9 @@ def main(args):
                         out_channels = num_classes,
                         edge_in_channels = None,
                         trainable_laziness=False )
+        elif args.model == 'MLP':
+            raise ValueError("Not yet implemented (at least correctly lol)")
+            model = MLP(in_features = mlp_in_dim, hidden_channels = args.hidden_dim, num_classes = num_classes)
         else:
             raise ValueError("Invalid model")
         
@@ -135,7 +142,8 @@ def main(args):
     overall_std = np.std(np.array(total_performance))
     if args.verbose:
         print(f"Mean overall performance is {overall_acc}, standard dev is {overall_std}")
-    print(f"{overall_acc}, {overall_std}")
+    #print(f"{overall_acc}, {overall_std}")
+    return overall_acc, overall_std
 
 
 if __name__ == "__main__":
@@ -161,7 +169,47 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    main(args)
+    # generate the list of sub datasets 
+    if args.dataset == 'traffic' and args.sub_dataset == 'full':
+        sub_datasets = ['PEMS03', 'PEMS04', 'PEMS07', 'PEMS08']
+    elif args.dataset == 'partly_cloudy' and args.sub_dataset == 'full':
+        sub_datasets = [f'{i:04d}' for i in range(155)]
+    elif args.dataset == 'synthetic' and args.sub_dataset == 'full':
+        dataset_types = ['camel_pm', 'gaussian_pm']
+        sub_datasets = []
+        for dataset_type in dataset_types:
+            for i in range(5):
+                sub_datasets.append(f'{dataset_type}_{i}')
+    else:
+        sub_datasets = [args.sub_dataset]
+
+    results_list = []
+    for sub_dataset in sub_datasets:
+        args.sub_dataset = sub_dataset 
+        score, stdev = main(args)
+
+        new_row = {
+            'model': args.model,
+            'hidden_dim': args.hidden_dim,
+            'epochs': args.epochs, 
+            'learning_rate': args.learning_rate,
+            'task_type': args.task_type, 
+            'dataset': args.dataset, 
+            'sub_dataset': sub_dataset,
+            'score': score, 
+            'stdev': stdev
+        }
+        results_list.append(new_row)
+
+    df_results = pd.DataFrame(results_list)
+    if len(sub_datasets) > 1:
+        sub_dataset = 'full'
+
+    save_name = f'{args.dataset}_{sub_dataset}_{args.model}_{args.hidden_dim}_{args.task_type}.csv'
+    df_results.to_csv(os.path.join('run_results',save_name), index = False)
+
+    #main(args)
+
 
     #Example : python classify_torch.py --dataset partly_cloudy --sub_dataset 0001 --task_type EMOTION3
 

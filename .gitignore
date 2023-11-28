@@ -162,4 +162,10 @@ cython_debug/
 data/traffic/*
 data/partly_cloudy/*
 data/synthetic/*
+data/partly_cloudy_labels/*
+data/partly_cloudy_moving_avg/*
+data/partly_cloudy_RAW/*
+data/*
+scripts/script_graveyard/*
+blis/models/data/*
 scripts/job_outputs/*

@@ -13,8 +13,9 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.decomposition import PCA
 import xgboost as xgb
 import numpy as np
-
+import pandas as pd
 import warnings
+import os
 from sklearn.exceptions import ConvergenceWarning
 warnings.filterwarnings('ignore', category=ConvergenceWarning)
 
@@ -84,7 +85,7 @@ def run_classifier_scattering(args,scattering_dict):
             param_grid = {
                 'model__C': [0.1, 1, 10],
                 'model__kernel': ['linear', 'rbf'],
-                'model__gamma': ['scale','auto', .01, .1, 1]
+                'model__gamma': ['scale','auto', .1, 1, 10]
             }
         elif isinstance(base_model, KNeighborsClassifier):
             param_grid = {
@@ -104,7 +105,7 @@ def run_classifier_scattering(args,scattering_dict):
             }
         elif isinstance(base_model, xgb.XGBClassifier):
             param_grid = {
-                'model__n_estimators': [50, 100, 150],
+                'model__n_estimators': [50, 100],
                 'model__learning_rate': [0.05, 0.1]
             }
 
@@ -132,28 +133,99 @@ def run_classifier_scattering(args,scattering_dict):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Parse arguments for the program.")
 
-    parser.add_argument("--scattering_type", choices=['blis', 'modulus'], help="Type of scattering: 'blis' or 'modulus'.")
+    parser.add_argument("--scattering_type", choices=['blis', 'modulus', 'all'], help="Type of scattering: 'blis' or 'modulus'.")
     parser.add_argument("--largest_scale", type=int, help="Largest (dyadic) scale as a positive integer.")
     parser.add_argument("--moment_list", nargs='+', type=int, default=[1], help="List of moments as positive integers. E.g., --moment_list 1 2 3.") 
     parser.add_argument("--dataset", choices=['traffic', 'partly_cloudy', 'synthetic'], help="Dataset: 'traffic' or 'partly_cloudy' or 'synthetic'.")
-    parser.add_argument("--sub_dataset", help="Sub-dataset value depending on the dataset chosen.")
+    parser.add_argument("--sub_dataset", help="Sub-dataset value depending on the dataset chosen. Use 'full' for entire dataset")
     parser.add_argument("--layer_list", nargs='+', type=int, default=[2], help="List of layers as positive integers. E.g., --layer_list 1 2.")
-    parser.add_argument("--model", choices=['RF', 'SVC', 'KNN', 'MLP', 'LR','XGB'], type=str, default="LR", help="Classification model to use. Options: 'RF', 'SVC', 'KNN', 'MLP', 'LR','XGB'")
+    parser.add_argument("--model", choices=['RF', 'SVC', 'KNN', 'MLP', 'LR','XGB', 'all'], type=str, default="LR", help="Classification model to use. Options: 'RF', 'SVC', 'KNN', 'MLP', 'LR','XGB', 'all'")
     parser.add_argument("--task_type", type=str,  help="The task type to use for the classification")
     parser.add_argument("--PCA_variance", type=float, default=1, help="PCA variance to retain (int between 0 and 1, default: 1)")
-    parser.add_argument("--wavelet_type", choices=['W1','W2'], default = 'W2', help='Type of wavelet, either W1 or W2')
+    parser.add_argument("--wavelet_type", choices=['W1','W2', 'all'], default = 'W2', help='Type of wavelet, either W1 or W2')
 
     args = parser.parse_args()
 
-    scattering_dict = {"scattering_type": args.scattering_type,
-                       "scale_type": f"largest_scale_{args.largest_scale}",
-                       "layers": args.layer_list,
-                       "moments" : args.moment_list,
-                       "wavelet_type": args.wavelet_type}
+    # generate the list of sub datasets 
+    if args.dataset == 'traffic' and args.sub_dataset == 'full':
+        sub_datasets = ['PEMS03', 'PEMS04', 'PEMS07', 'PEMS08']
+    elif args.dataset == 'partly_cloudy' and args.sub_dataset == 'full':
+        sub_datasets = [f'{i:04d}' for i in range(155)]
+    elif args.dataset == 'synthetic' and args.sub_dataset == 'full':
+        dataset_types = ['camel_pm', 'gaussian_pm']
+        sub_datasets = []
+        for dataset_type in dataset_types:
+            for i in range(5):
+                sub_datasets.append(f'{dataset_type}_{i}')
+    else:
+        sub_datasets = [args.sub_dataset]
+
+    if args.model == 'all':
+        models = ['RF', 'SVC', 'KNN', 'MLP', 'LR', 'XGB']
+    else:
+        models = [args.model]
     
-    final_score, final_stdev, n_comp = run_classifier_scattering(args,scattering_dict)
-    print(f"{final_score},{final_stdev},{n_comp}")
+    if args.scattering_type == 'all':
+        scattering_types = ['blis', 'modulus']
+    else:
+        scattering_types = [args.scattering_type]
+
+    if args.wavelet_type == 'all':
+        wavelet_types = ['W1', 'W2']
+    else:
+        wavelet_types = [args.wavelet_type]
+
+    results_list = []
+
+    for wavelet_type in wavelet_types:
+        for scattering_type in scattering_types:
+            for model in models:
+                for sub_dataset in sub_datasets:
+                    args.model = model 
+                    args.scattering_type = scattering_type 
+                    args.sub_dataset = sub_dataset 
+
+                    scattering_dict = {"scattering_type": scattering_type,
+                        "scale_type": f"largest_scale_{args.largest_scale}",
+                        "layers": args.layer_list,
+                        "moments" : args.moment_list,
+                        "wavelet_type": wavelet_type}
+                                        
+                    final_score, final_stdev, n_comp = run_classifier_scattering(args, scattering_dict)
+                    
+                    # store the results
+
+                    new_row = {
+                        'scattering_type': scattering_type, 
+                        'sub_dataset': sub_dataset,
+                        'model': model,
+                        'score': final_score,
+                        'stdev': final_stdev, 
+                        'ncomp': n_comp,
+                        'task': args.task_type,
+                        'pca_var': args.PCA_variance,
+                        'moment_list': '1',
+                        'layer_list': ','.join(map(str, args.layer_list)),
+                        'wavelet_type': wavelet_type,
+                        'dataset': args.dataset,
+                        'largest_scale': args.largest_scale
+                    }
+                    results_list.append(new_row)
+    
+    df_results = pd.DataFrame(results_list)
+    if len(sub_datasets) > 1:
+        sub_dataset = 'full'
+    if len(models) > 1:
+        model = 'full'
+    if len(wavelet_types) > 1:
+        wavelet_type = 'W12'
+    if len(scattering_types) > 1:
+        scattering_type = 'blis_mod'
+    layer_list = ','.join(map(str, args.layer_list))
+
+    save_name = f'{args.dataset}_{sub_dataset}_{wavelet_type}_{scattering_type}_{args.task_type}_{layer_list}_{args.largest_scale}.csv'
+    df_results.to_csv(os.path.join('run_results', save_name), index = False)
 
     #Example : python classify_scattering.py --dataset=traffic --largest_scale=4 --sub_dataset=PEMS04 --scattering_type=blis --task_type=DAY
     #Example : python classify_scattering.py --dataset=partly_cloudy --sub_dataset=0001 --largest_scale=4 --scattering_type=blis --task_type=EMOTION3 --moment_list 1 --layer_list 1 2 3 --model SVC
-
+    #Example: python classify_scattering.py --dataset synthetic --sub_dataset full --largest_scale 4 --scattering_type modulus --task_type PLUSMINUS --moment_list 1 --layer_list 1 2 --model LR

@@ -53,6 +53,7 @@ def main():
     # load adjacency matrix and signal
     A = np.load(os.path.join(dataset_dir, 'adjacency_matrix.npy'))
     x = np.load(os.path.join(dataset_dir, 'graph_signals.npy'))
+    import pdb; pdb.set_trace()
     if len(x.shape) == 2:
         x = x[:,:,None]
     # ensure that we're working with symmetric matrices!

@@ -214,3 +214,20 @@ class GNNML3(nn.Module):
         x = global_mean_pool(x, data.batch)
         x = F.relu(self.fc1(x))
         return self.fc2(x)
+
+class MLP(nn.Module):
+    def __init__(self, in_features, hidden_channels, num_classes):
+        super(MLP, self).__init__() 
+
+        # define some MLP layers, ignoring the graph structure 
+        self.lin1 = Linear(in_features, hidden_channels)
+        self.lin2 = Linear(hidden_channels, num_classes)
+        self.nonlin = nn.ReLU()
+
+    def forward(self, data):
+        x = data.x 
+        x = self.lin1(x)
+        x = self.nonlin(x)
+        x = self.lin2(x)
+        return x
+    
