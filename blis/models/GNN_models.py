@@ -4,7 +4,7 @@ from torch_geometric.data import Data, DataLoader
 from torch_geometric.nn import GCNConv, GATConv, ChebConv
 from torch_geometric.nn import GINConv, global_mean_pool
 from torch.nn import Sequential, Linear, ReLU
-from blis.models.spectral_conv import SpectConv
+from blis.models.spectral_conv import SpectConv, ML3Layer
 import torch
 
 class GCN(nn.Module):
@@ -184,27 +184,31 @@ class GNNML1(nn.Module):
         return self.fc2(x)
 
 class GNNML3(nn.Module):
-    def __init__(self):
+    def __init__(self, in_features, n_edges = 64, num_classes =1):
         super(GNNML3, self).__init__()
 
         # number of neuron for for part1 and part2
-        nout1=32
-        nout2=16
+        nout1=16
+        nout2=8
 
         nin=nout1+nout2
-        ne=dataset.data.edge_attr2.shape[1]
-        ninp=dataset.num_features
+        ne= n_edges
+        ninp=in_features
 
         self.conv1=ML3Layer(learnedge=True,nedgeinput=ne,nedgeoutput=ne,ninp=ninp,nout1=nout1,nout2=nout2)
         self.conv2=ML3Layer(learnedge=True,nedgeinput=ne,nedgeoutput=ne,ninp=nin ,nout1=nout1,nout2=nout2)
         self.conv3=ML3Layer(learnedge=True,nedgeinput=ne,nedgeoutput=ne,ninp=nin ,nout1=nout1,nout2=nout2) 
         
         self.fc1 = torch.nn.Linear(nin, 10)
-        self.fc2 = torch.nn.Linear(10, 1)
+        self.fc2 = torch.nn.Linear(10, num_classes)
         
 
     def forward(self, data):
         x=data.x
+
+        if len(x.shape)==1:
+            x=x[:,None]
+        
         edge_index=data.edge_index2
         edge_attr=data.edge_attr2
 

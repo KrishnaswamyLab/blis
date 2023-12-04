@@ -4,13 +4,15 @@ import argparse
 import torch
 import torch_geometric.transforms as T
 
-from blis.models.GNN_models import GCN, GAT, GIN, GNNML1, ChebNet, MLP
+from blis.models.GNN_models import GCN, GAT, GIN, GNNML1, GNNML3, ChebNet, MLP
 from blis.models.blis_legs_layer import BlisNet
 import argparse
 import numpy as np
 import tqdm
 import os 
 import pandas as pd
+
+from blis.models.spectral_conv import SpectralDesign
 
 def main(args):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -24,6 +26,8 @@ def main(args):
             transform = T.AddRandomWalkPE(walk_length=20, attr_name='pe')
         elif args.model == "ChebNet":
             transform = T.LaplacianLambdaMax(normalization="sym", is_undirected = True) # Check that all graphs are indeed undirected.
+        elif args.model == "GNNML3":
+            transform = SpectralDesign(nmax=0,recfield=2,dv=2,nfreq=6)
         else:
             transform = None
 
@@ -71,7 +75,9 @@ def main(args):
                         hidden_channels = args.hidden_dim,
                         num_classes = num_classes)
         elif args.model == "GNNML3":
-            raise ValueError("Not implemented yet !!! todo")
+            model = GNNML3(in_features = input_dim,
+                        n_edges = train_dl.dataset[0].edge_attr2.shape[1],
+                        num_classes = num_classes)
         
         elif args.model == "ChebNet":
             model = ChebNet(in_features = input_dim, hidden_channels = args.hidden_dim, num_classes = num_classes )
