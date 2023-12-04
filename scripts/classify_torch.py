@@ -15,6 +15,8 @@ import pandas as pd
 def main(args):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     #device = torch.device("cpu")
+    if args.verbose:
+        print(f'Training {args.model} on dataset {args.dataset, args.sub_dataset} on task {args.task_type}')
     total_performance = []
     for seed in [42,43,44,45,56]:
 
@@ -75,18 +77,24 @@ def main(args):
             model = ChebNet(in_features = input_dim, hidden_channels = args.hidden_dim, num_classes = num_classes )
         
         elif args.model == "BlisNet":
-            model = BlisNet(in_channels = input_dim, 
-                        hidden_channels = args.hidden_dim, 
-                        layout = args.layout,
-                        out_channels = num_classes,
-                        edge_in_channels = None,
-                        trainable_laziness=False )
+            if args.layout is not None:
+                model = BlisNet(in_channels = input_dim, 
+                            hidden_channels = args.hidden_dim, 
+                            layout = args.layout,
+                            out_channels = num_classes,
+                            edge_in_channels = None,
+                            trainable_laziness=False )
+            else:
+                model = BlisNet(in_channels = input_dim,
+                                hidden_channels = args.hidden_dim,
+                                out_channels = num_classes,
+                                edge_in_channels = None,
+                                trainable_laziness = False)
         elif args.model == 'MLP':
             raise ValueError("Not yet implemented (at least correctly lol)")
             model = MLP(in_features = mlp_in_dim, hidden_channels = args.hidden_dim, num_classes = num_classes)
         else:
             raise ValueError("Invalid model")
-        
         # Move the model to the specified device
         model = model.to(device)
 
@@ -131,7 +139,7 @@ def main(args):
 
                 out = model(b)
                 _, predicted = torch.max(out, 1)
-                b.y = torch.tensor(b.y)
+                b.y = torch.tensor(b.y) # i don't recall which dataset this was necessary for
                 total += b.y.size(0)
                 #import pdb; pdb.set_trace()
                 correct += (predicted.detach().cpu() == b.y.cpu()).sum().item()
@@ -159,7 +167,7 @@ if __name__ == "__main__":
     parser.add_argument("--dataset", choices=['traffic', 'partly_cloudy', 'synthetic'], help="Dataset: 'traffic' or 'partly_cloudy' or 'synthetic'.")
     parser.add_argument("--sub_dataset", help="Sub-dataset value depending on the dataset chosen.")
     parser.add_argument("--task_type", type=str,  help="The task type to use for the classification")
-    parser.add_argument("--model", type=str, default="GCN", help="Classification model to use")
+    parser.add_argument("--model", nargs = '+', type=str, default="GCN", help="Model: GCN, GAT, GIN, ChebNet, BlisNet, GNNML1, GNNML3, MLP")
     parser.add_argument("--hidden_dim", type=int, default=16, help="Number of hidden channels in the GNN model")
     parser.add_argument("--epochs", type=int, default=100, help="Number of epochs to train for")
     parser.add_argument("--learning_rate", type = float, default = .001, help="Optimizer learning rate")
@@ -184,26 +192,34 @@ if __name__ == "__main__":
         sub_datasets = [args.sub_dataset]
 
     results_list = []
-    for sub_dataset in sub_datasets:
-        args.sub_dataset = sub_dataset 
-        score, stdev = main(args)
+    model_list = args.model 
+    if args.model[0] == 'all':
+        model_list = ['GCN', 'GAT', 'GIN', 'ChebNet', 'BlisNet', 'GNNML1', 'GNNML3', 'MLP']
 
-        new_row = {
-            'model': args.model,
-            'hidden_dim': args.hidden_dim,
-            'epochs': args.epochs, 
-            'learning_rate': args.learning_rate,
-            'task_type': args.task_type, 
-            'dataset': args.dataset, 
-            'sub_dataset': sub_dataset,
-            'score': score, 
-            'stdev': stdev
-        }
-        results_list.append(new_row)
+    for model in model_list:
+        for sub_dataset in sub_datasets:
+            args.sub_dataset = sub_dataset 
+            args.model = model 
+            score, stdev = main(args)
+
+            new_row = {
+                'model': args.model,
+                'hidden_dim': args.hidden_dim,
+                'epochs': args.epochs, 
+                'learning_rate': args.learning_rate,
+                'task_type': args.task_type, 
+                'dataset': args.dataset, 
+                'sub_dataset': sub_dataset,
+                'score': score, 
+                'stdev': stdev
+            }
+            results_list.append(new_row)
 
     df_results = pd.DataFrame(results_list)
     if len(sub_datasets) > 1:
         sub_dataset = 'full'
+    if len(model_list) > 1:
+        args.model = 'multi-model'
 
     save_name = f'{args.dataset}_{sub_dataset}_{args.model}_{args.hidden_dim}_{args.task_type}.csv'
     df_results.to_csv(os.path.join('run_results',save_name), index = False)
@@ -211,6 +227,6 @@ if __name__ == "__main__":
     #main(args)
 
 
-    #Example : python classify_torch.py --dataset partly_cloudy --sub_dataset 0001 --task_type EMOTION3
+    #Example : python classify_torch.py --dataset partly_cloudy --sub_dataset 0001 --task_type EMOTION3 --model BlisNet
 
 

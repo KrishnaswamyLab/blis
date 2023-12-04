@@ -168,4 +168,8 @@ data/partly_cloudy_RAW/*
 data/*
 scripts/script_graveyard/*
 blis/models/data/*
+scripts/results_shallow/*
+scripts/results_sym/*
+scripts/shallow_CV_results/*
+scripts/run_results/*
 scripts/job_outputs/*

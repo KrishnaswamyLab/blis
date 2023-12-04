@@ -37,7 +37,7 @@ def cloudy_data_loader(seed, subdata_type, task_type, batch_size = 32, transform
     return train_dl, test_dl, num_classes
 
 
-def cloudy_scattering_data_loader(seed, subdata_type, task_type, batch_size = 32, scattering_dict = None):
+def cloudy_scattering_data_loader(seed, subdata_type, task_type, batch_size = 32, scattering_dict = None, ignore_graph = False):
     """
     Extract the scattering features according to the following options
 
@@ -52,18 +52,23 @@ def cloudy_scattering_data_loader(seed, subdata_type, task_type, batch_size = 32
     
     """
     label_path = os.path.join(DATA_DIR,"partly_cloudy",subdata_type,task_type,"label.npy")
-    layer_paths = [os.path.join(DATA_DIR,"partly_cloudy",subdata_type,"processed",
-                                scattering_dict["scattering_type"],
-                                scattering_dict["wavelet_type"],
-                                scattering_dict["scale_type"],
-                                f"layer_{layer}") for layer in scattering_dict["layers"]]
-   
-    moments = []
-    for layer_path in layer_paths:
-        for moment in scattering_dict["moments"]:
-            moments.append(np.load(os.path.join(layer_path, "moment_{}.npy".format(moment))))
+    if ignore_graph:
+        graph_signal_path = os.path.join(DATA_DIR,"partly_cloudy",subdata_type,"graph_signals.npy")
+        X = np.load(graph_signal_path)
+    else:
+        layer_paths = [os.path.join(DATA_DIR,"partly_cloudy",subdata_type,"processed",
+                                    scattering_dict["scattering_type"],
+                                    scattering_dict["wavelet_type"],
+                                    scattering_dict["scale_type"],
+                                    f"layer_{layer}") for layer in scattering_dict["layers"]]
+    
+        moments = []
+        for layer_path in layer_paths:
+            for moment in scattering_dict["moments"]:
+                moments.append(np.load(os.path.join(layer_path, "moment_{}.npy".format(moment))))
 
-    X = np.concatenate(moments,1)
+        X = np.concatenate(moments,1)
+        
     y = np.load(label_path)
 
     train_idx, val_idx = train_test_split(np.arange(len(X)), test_size=0.3, random_state=seed)

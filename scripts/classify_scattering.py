@@ -28,17 +28,20 @@ def run_classifier_scattering(args,scattering_dict):
             (X_train, y_train),  (X_test, y_test) = traffic.traffic_scattering_data_loader(seed=seed,
                                                                                                     subdata_type=args.sub_dataset,
                                                                                                     task_type=args.task_type,
-                                                                                                    scattering_dict=scattering_dict)
+                                                                                                    scattering_dict=scattering_dict,
+                                                                                                    ignore_graph=args.ignore_graph)
         elif args.dataset == "partly_cloudy":
             (X_train, y_train),  (X_test, y_test) = cloudy.cloudy_scattering_data_loader(seed=seed,
                                                                                                     subdata_type=args.sub_dataset,
                                                                                                     task_type=args.task_type,
-                                                                                                    scattering_dict=scattering_dict)
+                                                                                                    scattering_dict=scattering_dict,
+                                                                                                    ignore_graph=args.ignore_graph)
         elif args.dataset == "synthetic":
             (X_train, y_train),  (X_test, y_test) = synthetic.synthetic_scattering_data_loader(seed=seed,
                                                                                                     subdata_type=args.sub_dataset,
                                                                                                     task_type=args.task_type,
-                                                                                                    scattering_dict=scattering_dict)
+                                                                                                    scattering_dict=scattering_dict,
+                                                                                                    ignore_graph=args.ignore_graph)
         else:
             raise ValueError("Invalid dataset")
 
@@ -68,6 +71,8 @@ def run_classifier_scattering(args,scattering_dict):
         if args.model == "XGB":
             base_model = xgb.XGBClassifier()
 
+        in_shape = X_train.shape[1]
+
         # Create a pipeline that first applies the standard scaler, then the model
         pipeline = Pipeline([
             ('scaler', StandardScaler()),
@@ -94,7 +99,7 @@ def run_classifier_scattering(args,scattering_dict):
             }
         elif isinstance(base_model, MLPClassifier):
             param_grid = {
-                'model__hidden_layer_sizes': [(50,), (100,), (50, 50), (150, 50)],
+                'model__hidden_layer_sizes': [(in_shape//2, in_shape//4), (in_shape//2, in_shape//4, in_shape//8), (150, 50)],
                 'model__activation': ['relu'],
                 'model__alpha': [.01]
             }
@@ -114,7 +119,7 @@ def run_classifier_scattering(args,scattering_dict):
         
         y_pred = clf.predict(X_test)
         accuracy = accuracy_score(y_test, y_pred)
-        #print("Best parameters found: ",clf.best_params_)
+        print("Best parameters found: ",clf.best_params_)
         train_score = clf.score(X_train, y_train)
         test_score = clf.score(X_test, y_test)
         #print("Train score : ", train_score)
@@ -143,6 +148,7 @@ if __name__ == "__main__":
     parser.add_argument("--task_type", type=str,  help="The task type to use for the classification")
     parser.add_argument("--PCA_variance", type=float, default=1, help="PCA variance to retain (int between 0 and 1, default: 1)")
     parser.add_argument("--wavelet_type", choices=['W1','W2', 'all'], default = 'W2', help='Type of wavelet, either W1 or W2')
+    parser.add_argument("--ignore_graph", type=bool, default=False, help="Ignore the graph structure of the data")
 
     args = parser.parse_args()
 
@@ -208,7 +214,8 @@ if __name__ == "__main__":
                         'layer_list': ','.join(map(str, args.layer_list)),
                         'wavelet_type': wavelet_type,
                         'dataset': args.dataset,
-                        'largest_scale': args.largest_scale
+                        'largest_scale': args.largest_scale,
+                        'ignore_graph': args.ignore_graph
                     }
                     results_list.append(new_row)
     
@@ -223,7 +230,10 @@ if __name__ == "__main__":
         scattering_type = 'blis_mod'
     layer_list = ','.join(map(str, args.layer_list))
 
-    save_name = f'{args.dataset}_{sub_dataset}_{wavelet_type}_{scattering_type}_{args.task_type}_{layer_list}_{args.largest_scale}.csv'
+    if args.ignore_graph:
+        save_name = f'{args.dataset}_{sub_dataset}_{wavelet_type}_{scattering_type}_{args.task_type}_{layer_list}_{args.largest_scale}_ignore_graph.csv'
+    else:
+        save_name = f'{args.dataset}_{sub_dataset}_{wavelet_type}_{scattering_type}_{args.task_type}_{layer_list}_{args.largest_scale}.csv'
     df_results.to_csv(os.path.join('run_results', save_name), index = False)
 
     #Example : python classify_scattering.py --dataset=traffic --largest_scale=4 --sub_dataset=PEMS04 --scattering_type=blis --task_type=DAY

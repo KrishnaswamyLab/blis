@@ -156,7 +156,7 @@ class GNNML1(nn.Module):
         
         self.fc1 = torch.nn.Linear(nin, 10)
         self.fc2 = torch.nn.Linear(10, num_classes)
-        
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     def forward(self, data):
 
@@ -166,13 +166,14 @@ class GNNML1(nn.Module):
             x=x[:,None]
               
         edge_index=data.edge_index
-        edge_attr=torch.ones(edge_index.shape[1],1)
+        # need to send this to device!
+        edge_attr=torch.ones(edge_index.shape[1],1).to(self.device)
         
         if self.concat:
             x = torch.cat([F.relu(self.fc11(x)), F.relu(self.conv11(x, edge_index,edge_attr)),F.relu(self.fc12(x)*self.fc13(x))],1)
             x = torch.cat([F.relu(self.fc21(x)), F.relu(self.conv21(x, edge_index,edge_attr)),F.relu(self.fc22(x)*self.fc23(x))],1)
             x = torch.cat([F.relu(self.fc31(x)), F.relu(self.conv31(x, edge_index,edge_attr)),F.relu(self.fc32(x)*self.fc33(x))],1)
-        else:            
+        else:
             x = F.relu(self.fc11(x)+self.conv11(x, edge_index,edge_attr)+self.fc12(x)*self.fc13(x))
             x = F.relu(self.fc21(x)+self.conv21(x, edge_index,edge_attr)+self.fc22(x)*self.fc23(x))
             x = F.relu(self.fc31(x)+self.conv31(x, edge_index,edge_attr)+self.fc32(x)*self.fc33(x))

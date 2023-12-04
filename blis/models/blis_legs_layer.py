@@ -145,7 +145,10 @@ class Blis(torch.nn.Module):
         """ This performs  Px with P = 1/2(I + AD^-1) (column stochastic matrix) at the different scales"""
 
         x, edge_index = data.x, data.edge_index
-        s0 = x[:,:,None]
+        if len(x.shape) == 1:
+            s0 = x[:, None, None]
+        else:
+            s0 = x[:,:,None]
         avgs = [s0]
         for i in range(16):
             avgs.append(self.diffusion_layer1(avgs[-1], edge_index)[0])
@@ -176,7 +179,7 @@ class Blis(torch.nn.Module):
 
 class BlisNet(torch.nn.Module):
 
-    def __init__(self, in_channels, hidden_channels, out_channels, edge_in_channels = None, trainable_laziness=False, layout = ['blis','gcn','gcn'],  **kwargs):
+    def __init__(self, in_channels, hidden_channels, out_channels, edge_in_channels = None, trainable_laziness=False, layout = ['blis','blis','blis'],  **kwargs):
 
         super().__init__()
         self.in_channels = in_channels
@@ -220,11 +223,10 @@ class BlisNet(torch.nn.Module):
             else:
                 x = layer(data.x, data.edge_index)
             data.x =x
-        
-        x = self.batch_norm(data.x)
+        x = self.mean(data.x, data.batch)
+        x = self.batch_norm(x)
         x = self.lin1(x)
         x = self.act(x)
-        x = self.mean(x,data.batch)
         x = self.lin2(x)
         x = self.act(x)
         x = self.lin3(x)
