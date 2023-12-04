@@ -236,3 +236,73 @@ class MLP(nn.Module):
         x = self.lin2(x)
         return x
     
+
+class PPGN(nn.Module):
+    def __init__(self,in_features, hidden_channels, num_classes = 1):
+        super(PPGN, self).__init__()
+
+        #self.nmax=nmax        
+        self.nneuron= hidden_channels
+        ninp=in_features
+        
+        bias=True
+        self.mlp1_1 = torch.nn.Conv2d(ninp,self.nneuron,1,bias=bias) 
+        self.mlp1_2 = torch.nn.Conv2d(ninp,self.nneuron,1,bias=bias) 
+        self.mlp1_3 = torch.nn.Conv2d(self.nneuron+ninp, self.nneuron,1,bias=bias) 
+
+        self.mlp2_1 = torch.nn.Conv2d(self.nneuron,self.nneuron,1,bias=bias) 
+        self.mlp2_2 = torch.nn.Conv2d(self.nneuron,self.nneuron,1,bias=bias) 
+        self.mlp2_3 = torch.nn.Conv2d(2*self.nneuron,self.nneuron,1,bias=bias) 
+
+        self.mlp3_1 = torch.nn.Conv2d(self.nneuron,self.nneuron,1,bias=bias) 
+        self.mlp3_2 = torch.nn.Conv2d(self.nneuron,self.nneuron,1,bias=bias) 
+        self.mlp3_3 = torch.nn.Conv2d(2*self.nneuron,self.nneuron,1,bias=bias) 
+
+        self.mlp4_1 = torch.nn.Conv2d(self.nneuron,self.nneuron,1,bias=bias) 
+        self.mlp4_2 = torch.nn.Conv2d(self.nneuron,self.nneuron,1,bias=bias) 
+        self.mlp4_3 = torch.nn.Conv2d(2*self.nneuron,self.nneuron,1,bias=bias) 
+
+        self.h1 = torch.nn.Linear(1*4*self.nneuron, num_classes)        
+
+
+    def forward(self,data):
+
+        x=data.X2 
+        M=torch.sum(data.M,(1),True)              
+
+        x1=F.relu(self.mlp1_1(x)*M) 
+        x2=F.relu(self.mlp1_2(x)*M)  
+        x1x2 = torch.matmul(x1, x2)*M
+        x=F.relu(self.mlp1_3(torch.cat([x1x2,x],1))*M)         
+
+        # read out mean or add ?        
+        xo1=torch.sum(x*data.M[:,0:1,:,:],(2,3))
+
+        x1=F.relu(self.mlp2_1(x)*M) 
+        x2=F.relu(self.mlp2_2(x)*M)  
+        x1x2 = torch.matmul(x1, x2)*M
+        x=F.relu(self.mlp2_3(torch.cat([x1x2,x],1))*M) 
+
+        # read out         
+        xo2=torch.sum(x*data.M[:,0:1,:,:],(2,3))
+
+
+        x1=F.relu(self.mlp3_1(x)*M) 
+        x2=F.relu(self.mlp3_2(x)*M)  
+        x1x2 = torch.matmul(x1, x2)*M
+        x=F.relu(self.mlp3_3(torch.cat([x1x2,x],1))*M) 
+
+        # read out         
+        xo3=torch.sum(x*data.M[:,0:1,:,:],(2,3))
+
+        x1=F.relu(self.mlp4_1(x)*M) 
+        x2=F.relu(self.mlp4_2(x)*M)  
+        x1x2 = torch.matmul(x1, x2)*M
+        x=F.relu(self.mlp4_3(torch.cat([x1x2,x],1))*M) 
+        
+        # read out        
+        xo4=torch.sum(x*data.M[:,0:1,:,:],(2,3))
+        
+        x=torch.cat([xo1,xo2,xo3,xo4],1)         
+        
+        return F.log_softmax(self.h1(x), dim=1)

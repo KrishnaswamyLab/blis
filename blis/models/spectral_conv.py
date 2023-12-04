@@ -233,13 +233,20 @@ class SpectralDesign(object):
         self.vmax=vmax
 
         # max node for PPGN algorithm, set 0 if you do not use PPGN
-        self.nmax=nmax    
+        self.nmax= nmax 
 
     def __call__(self, data):
 
         n =data.x.shape[0] 
+
+        if self.nmax==-1:
+            nmax = data.x.shape[0] # Here we assume that all graphs in the dataset have the same number of nodes !
+        else:
+            nmax = self.nmax
+
         if len(data.x.shape)==1:
             nf = 1
+            data.x = data.x.unsqueeze(-1)
         else:    
             nf=data.x.shape[1]  
 
@@ -305,14 +312,14 @@ class SpectralDesign(object):
         data.edge_attr2 = torch.Tensor(SP[:,E[0],E[1]].T).type(torch.float32)  
 
         # set tensor for Maron's PPGN         
-        if self.nmax>0:       
-            H=torch.zeros(1,nf+2,self.nmax,self.nmax)
+        if nmax>0:      
+            H=torch.zeros(1,nf+2,nmax,nmax)
             H[0,0,data.edge_index[0],data.edge_index[1]]=1 
             H[0,1,0:n,0:n]=torch.diag(torch.ones(data.x.shape[0]))
             for j in range(0,nf):      
                 H[0,j+2,0:n,0:n]=torch.diag(data.x[:,j])
             data.X2= H 
-            M=torch.zeros(1,2,self.nmax,self.nmax)
+            M=torch.zeros(1,2,nmax,nmax)
             for i in range(0,n):
                 M[0,0,i,i]=1
             M[0,1,0:n,0:n]=1-M[0,0,0:n,0:n]

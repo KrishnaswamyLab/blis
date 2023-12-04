@@ -4,7 +4,7 @@ import argparse
 import torch
 import torch_geometric.transforms as T
 
-from blis.models.GNN_models import GCN, GAT, GIN, GNNML1, GNNML3, ChebNet, MLP
+from blis.models.GNN_models import GCN, GAT, GIN, GNNML1, GNNML3, ChebNet, MLP, PPGN
 from blis.models.blis_legs_layer import BlisNet
 import argparse
 import numpy as np
@@ -27,7 +27,9 @@ def main(args):
         elif args.model == "ChebNet":
             transform = T.LaplacianLambdaMax(normalization="sym", is_undirected = True) # Check that all graphs are indeed undirected.
         elif args.model == "GNNML3":
-            transform = SpectralDesign(nmax=0,recfield=2,dv=2,nfreq=6)
+            transform = SpectralDesign(nmax=0,recfield=1,dv=2,nfreq=4)
+        elif args.model == "PPGN":
+            transform = SpectralDesign(nmax=-1,recfield=1,dv=2,nfreq=4)
         else:
             transform = None
 
@@ -77,6 +79,11 @@ def main(args):
         elif args.model == "GNNML3":
             model = GNNML3(in_features = input_dim,
                         n_edges = train_dl.dataset[0].edge_attr2.shape[1],
+                        num_classes = num_classes)
+        
+        elif args.model == "PPGN":
+            model = PPGN(in_features = train_dl.dataset[0].X2.shape[1],
+                         hidden_channels=args.hidden_dim, 
                         num_classes = num_classes)
         
         elif args.model == "ChebNet":
