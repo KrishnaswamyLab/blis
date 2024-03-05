@@ -21,7 +21,7 @@ def create_dataset(X, y, A, transform = None):
     data_list = []
 
     #print("Creating dataset....") 
-    for i in tqdm.tqdm(range(X.shape[0])):
+    for i in range(X.shape[0]):
         num_nodes = X[i].shape[0]
         
         data = Data(x=torch.Tensor(X[i]), edge_index=edge_index, y=torch.Tensor([y[i]]).long(), num_nodes = num_nodes, edge_weight = edge_weight)

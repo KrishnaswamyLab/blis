@@ -5,7 +5,7 @@ import torch.nn as nn
 from torch.nn import Linear
 from torch_scatter import scatter_mean
 from torch_geometric.nn import MessagePassing
-from torch_geometric.utils import degree
+from torch_geometric.utils import degree, add_remaining_self_loops
 from torch_geometric.utils.num_nodes import maybe_num_nodes
 from torch_scatter import scatter_add
 import torch_geometric

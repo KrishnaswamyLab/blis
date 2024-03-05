@@ -20,7 +20,8 @@ def main(args):
     if args.verbose:
         print(f'Training {args.model} on dataset {args.dataset, args.sub_dataset} on task {args.task_type}')
     total_performance = []
-    for seed in [42,43,44,45,56]:
+    #for seed in [42,43,44,45,46]:
+    for seed in np.arange(1,11):
 
         if args.model == "GPS":
             transform = T.AddRandomWalkPE(walk_length=20, attr_name='pe')
@@ -118,7 +119,7 @@ def main(args):
         criterion = torch.nn.CrossEntropyLoss()
 
         # Training loop
-        for epoch in tqdm.tqdm(range(args.epochs)):
+        for epoch in range(args.epochs):
             model.train()
             total_loss = 0
 
@@ -184,7 +185,7 @@ if __name__ == "__main__":
     parser.add_argument("--hidden_dim", type=int, default=16, help="Number of hidden channels in the GNN model")
     parser.add_argument("--epochs", type=int, default=100, help="Number of epochs to train for")
     parser.add_argument("--learning_rate", type = float, default = .001, help="Optimizer learning rate")
-    parser.add_argument("--verbose", type=int, default=0, help="Print training, either 0 or 1")
+    parser.add_argument("--verbose", type=int, default=1, help="Print training, either 0 or 1")
     parser.add_argument('--layout', type=csv_to_list, help='Layout to use for the BliNet experiments e.g. blis,blis,dim_reduction,gcn')
 
 
@@ -234,7 +235,7 @@ if __name__ == "__main__":
     if len(model_list) > 1:
         args.model = 'multi-model'
 
-    save_name = f'{args.dataset}_{sub_dataset}_{args.model}_{args.hidden_dim}_{args.task_type}.csv'
+    save_name = f'10fold_{args.dataset}_{sub_dataset}_{args.model}_{args.hidden_dim}_{args.task_type}.csv'
     df_results.to_csv(os.path.join('run_results',save_name), index = False)
 
     #main(args)
