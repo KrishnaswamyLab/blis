@@ -104,11 +104,15 @@ class ChebNet(nn.Module):
     def __init__(self,in_features, hidden_channels, num_classes, S=5):
         super(ChebNet, self).__init__()
 
-        self.conv1 = ChebConv(in_features, 32,S)
-        self.conv2 = ChebConv(32, hidden_channels, S)
-        self.conv3 = ChebConv(hidden_channels, hidden_channels, S)        
-        self.fc1 = torch.nn.Linear(hidden_channels, 10)
-        self.fc2 = torch.nn.Linear(10, num_classes)
+        #self.conv1 = ChebConv(in_features, 32,S)
+        #self.conv2 = ChebConv(32, hidden_channels, S)
+        #self.conv3 = ChebConv(hidden_channels, hidden_channels, S)        
+        #self.fc1 = torch.nn.Linear(hidden_channels, 10)
+        #self.fc2 = torch.nn.Linear(10, num_classes)
+        self.conv1 = ChebConv(in_features, hidden_channels, S)
+        self.conv2 = ChebConv(hidden_channels, hidden_channels, S)
+        self.lin = Linear(hidden_channels, num_classes)
+        self.final_nonlin = nn.Softmax(dim=1)
         
     def forward(self, data):
         x=data.x
@@ -119,10 +123,11 @@ class ChebNet(nn.Module):
         
         x = F.relu(self.conv1(x, edge_index,lambda_max=data.lambda_max,batch=data.batch))              
         x = F.relu(self.conv2(x, edge_index,lambda_max=data.lambda_max,batch=data.batch))        
-        x = F.relu(self.conv3(x, edge_index,lambda_max=data.lambda_max,batch=data.batch))
+        #x = F.relu(self.conv3(x, edge_index,lambda_max=data.lambda_max,batch=data.batch))
         x = global_mean_pool(x, data.batch)
-        x = F.relu(self.fc1(x))
-        return self.fc2(x)
+        #x = F.relu(self.fc1(x))
+        x = self.lin(x)
+        return x
 
     
 class GNNML1(nn.Module):
