@@ -60,6 +60,6 @@ python scripts/classify_scattering.py --dataset=traffic --largest_scale=4 --sub_
 
 ### Help
 
-If you have any questions or require assistance using BLIS-Net, please contact us at <https://krishnaswamylab.org/get-help>.
+If you have any questions or require assistance using BLIS-Net, please contact us at <https://krishnaswamylab.org/contact>.
 
 
