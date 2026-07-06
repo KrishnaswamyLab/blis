@@ -31,14 +31,17 @@ pip install -e .
 note: it may also be necessary to install [torch-scatter](https://github.com/rusty1s/pytorch_scatter)
 
 ### Data download (optional)
-The data used in the paper may be downloaded from the following [link](https://drive.google.com/file/d/1zMItIcmXFbN66sEZOPql30dKgxPFo5_v/view?usp=sharing).
-Please download the zip into the main project directory data directory, perhaps following something like:
+The data used in the paper is archived on Zenodo (DOI: [10.5281/zenodo.15882346](https://doi.org/10.5281/zenodo.15882346)) and may be downloaded from <https://zenodo.org/records/15882346>.
+
+From the main project directory, download and unpack the archive into the `data` directory, for example:
 ~~~
+wget -O data.zip "https://zenodo.org/records/15882346/files/data.zip?download=1"
 rm -rf data
 unzip data.zip
 mv data_export data
 rm data.zip
 ~~~
+The archive contains three graph signal classification tasks: `partly_cloudy` (fMRI), `synthetic`, and `traffic` (Caltrans PeMS). See `data_desc.tex` on the Zenodo record for details.
 
 ## Quick Start
 
