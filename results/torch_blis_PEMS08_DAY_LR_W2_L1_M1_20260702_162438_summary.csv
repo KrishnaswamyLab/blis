@@ -1,0 +1,2 @@
+dataset,task,wavelet_type,largest_scale,layers,moments,model,accuracy_mean,accuracy_std,balanced_accuracy_mean,balanced_accuracy_std,macro_f1_mean,macro_f1_std,weighted_f1_mean,weighted_f1_std,macro_precision_mean,macro_precision_std,macro_recall_mean,macro_recall_std,n_pca_mean
+PEMS08,DAY,W2,4,1,1,LR,0.1534154535274356,0.0,0.14800469719004988,0.0,0.1306853884201596,0.0,0.1346955481705436,0.0,0.15227362084825022,0.0,0.14800469719004988,0.0,6.0

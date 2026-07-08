@@ -1,0 +1,2 @@
+dataset,task,wavelet_type,largest_scale,layers,moments,model,seed,pca_variance,epochs,batch_size,lr,weight_decay,device,accuracy,balanced_accuracy,macro_f1,weighted_f1,macro_precision,macro_recall,n_pca
+PEMS08,DAY,W2,4,1,1,LR,42,0.99,5,512,0.001,0.0001,cpu,0.1534154535274356,0.14800469719004988,0.1306853884201596,0.1346955481705436,0.15227362084825022,0.14800469719004988,6

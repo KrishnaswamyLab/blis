@@ -1,0 +1,2 @@
+model,hidden_dim,epochs,learning_rate,task_type,dataset,sub_dataset,score,stdev
+GAT,16,100,0.001,PLUSMINUS,synthetic,gaussian_pm_0,99.16666666666667,0.0

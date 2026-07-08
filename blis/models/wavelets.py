@@ -24,6 +24,7 @@ def get_M(A: np.ndarray) -> np.ndarray:
 
 def get_W_2(A, largest_scale, low_pass_as_wavelet=False):
     P = get_P(A)
+    print(f'This is the shape of P in the get_W_2  {P.shape}')
     N = P.shape[0]
     powered_P = P
     if low_pass_as_wavelet:
@@ -38,7 +39,81 @@ def get_W_2(A, largest_scale, low_pass_as_wavelet=False):
     low_pass = powered_P
     if low_pass_as_wavelet:
         wavelets[-1,:,:] = low_pass
+    print(f'This is the shape of wavelets in the get_W_2: {wavelets.shape}')
     return wavelets
+
+def compute_W_2_transform(A, X, largest_scale, low_pass_as_wavelet=False):
+    if X.ndim == 2:
+        X = X[:, :, None]
+
+    p, n, _ = X.shape
+    X=X.transpose(2,1,0)
+    print(f'this is n: {n}')
+    P = get_P(A)
+    m = A.shape[0]
+    print(f'This is the shape of P in the compute_W_2_transform: {P.shape}')
+    I = np.eye(m)
+    coeffs = []
+    #C0 = np.zeros((m, p, 3))
+    # for i in range(p):
+    #     x_i = X[i, :, 0]
+    #     print(f'this is the x_i: {x_i.shape}')
+    #     C0[:, i, 0] = (I - P) @ x_i
+    print(f'this is the shape  of X: {X.shape}')
+    print(f'this is the shape of I-P :{ (I - P).shape}')
+    C0=(I-P) @ X
+
+    coeffs.append(C0)
+    a = C0.copy()
+    for j in range(1, largest_scale+1):
+        pow_val = 2 ** (j - 1)
+        prev = a.copy()
+        for _ in range(pow_val):
+            prev = P @ prev
+        curr = prev.copy()
+        for _ in range(pow_val):
+            curr = P @ curr
+        a = prev + curr
+        coeffs.append(a)
+    print(f'this is the shape of coeffs before the largest scale: {len(coeffs)}')
+    if low_pass_as_wavelet:
+        low_pass = a.copy()
+        for _ in range(2 ** (largest_scale - 1)):
+            low_pass = P @ low_pass
+        coeffs.append(low_pass)
+    coeffs_array = np.stack(coeffs, axis=0)
+    print(f'this is the shape of coeffs_array before transpose: {coeffs_array.shape}')
+    return coeffs_array.transpose(3,2,1,0)
+            
+    
+    
+    
+    
+# def compute_c_terms_plus(P, x, J):
+#     if J < 1:
+#         return []
+#     c_terms = [x - P.dot(x)]
+#     for j in range(1, J):
+#         a = c_terms[j-1]
+#         k = 2**(j-1)
+#         u = a.copy()
+#         for _ in range(k):
+#             u = P.dot(u)
+#         v = u.copy()
+#         for _ in range(k):
+#             v = P.dot(v)
+#         c_terms.append(u + v)
+#     return c_terms
+
+
+
+
+
+
+
+
+
+  
 
 def get_W_1(A: np.ndarray, largest_scale: int, low_pass_as_wavelet=False) -> list:
     #import pdb; pdb.set_trace()

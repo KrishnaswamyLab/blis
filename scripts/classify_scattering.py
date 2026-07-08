@@ -1,3 +1,8 @@
+import os
+import sys 
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+
 from blis.data import traffic, cloudy, synthetic
 import argparse
 from sklearn.pipeline import Pipeline
@@ -15,9 +20,10 @@ import xgboost as xgb
 import numpy as np
 import pandas as pd
 import warnings
-import os
 from sklearn.exceptions import ConvergenceWarning
 warnings.filterwarnings('ignore', category=ConvergenceWarning)
+
+print(f'this is the initiating the classifier')
 
 def run_classifier_scattering(args,scattering_dict):
     full_test_scores = []
@@ -115,6 +121,7 @@ def run_classifier_scattering(args,scattering_dict):
             }
 
         clf = GridSearchCV(pipeline, param_grid, cv = 3)
+        print(f"Fitting model {args.model} for dataset {args.dataset} with sub-dataset {args.sub_dataset}, scattering type {args.scattering_type}, wavelet type {scattering_dict['wavelet_type']}, largest scale {scattering_dict['scale_type']}, task type {args.task_type}, PCA variance {args.PCA_variance}, moment list {args.moment_list}, layer list {args.layer_list}")
         clf.fit(X_train, y_train)
         
         y_pred = clf.predict(X_test)
@@ -122,8 +129,8 @@ def run_classifier_scattering(args,scattering_dict):
         print("Best parameters found: ",clf.best_params_)
         train_score = clf.score(X_train, y_train)
         test_score = clf.score(X_test, y_test)
-        #print("Train score : ", train_score)
-        #print("Test score : ", test_score)
+        print("Train score : ", train_score)
+        print("Test score : ", test_score)
         full_test_scores.append(test_score)
         full_train_scores.append(train_score)
         full_n_pca.append(n_comp)
@@ -234,7 +241,13 @@ if __name__ == "__main__":
         save_name = f'{args.dataset}_{sub_dataset}_{wavelet_type}_{scattering_type}_{args.task_type}_{layer_list}_{args.largest_scale}_ignore_graph.csv'
     else:
         save_name = f'{args.dataset}_{sub_dataset}_{wavelet_type}_{scattering_type}_{args.task_type}_{layer_list}_{args.largest_scale}.csv'
-    df_results.to_csv(os.path.join('run_results', save_name), index = False)
+    save_dir='run_results'
+    if os.path.exists(save_dir):
+        df_results.to_csv(os.path.join(save_dir,save_name), index = False)
+    else:
+        os.mkdir(save_dir)
+        df_results.to_csv(os.path.join(save_dir,save_name), index = False)
+
 
     #Example : python classify_scattering.py --dataset=traffic --largest_scale=4 --sub_dataset=PEMS04 --scattering_type=blis --task_type=DAY
     #Example : python classify_scattering.py --dataset=partly_cloudy --sub_dataset=0001 --largest_scale=4 --scattering_type=blis --task_type=EMOTION3 --moment_list 1 --layer_list 1 2 3 --model SVC

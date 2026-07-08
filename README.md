@@ -21,7 +21,7 @@ The first implementation utilizes numpy to compute the scattering moments and wr
 ## Installation
 
 Create a conda environment
-
+ss
 ~~~
 conda create -n blis python=3.9`
 conda activate blis

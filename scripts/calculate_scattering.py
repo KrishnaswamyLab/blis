@@ -1,6 +1,9 @@
+import sys 
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import numpy as np
 import matplotlib.pyplot as plt 
-import os
+
 import blis.models.scattering_transform as st 
 import blis.models.wavelets as wav 
 from blis import DATA_DIR
@@ -9,6 +12,7 @@ import time
 
 # example usage: python calculate_scattering.py --scattering_type blis --wavelet_type W2 --largest_scale 4 --highest_moment 3 --dataset traffic --sub_dataset PEMS08
 
+print('Started')
 def validate_args(args):
     # Check if dataset is 'traffic' and sub_dataset is valid
     if args.dataset == 'traffic' and args.sub_dataset not in ['PEMS08', 'PEMS07', 'PEMS04', 'PEMS03']:
@@ -46,23 +50,31 @@ def main():
     dataset_dir = os.path.join(DATA_DIR, args.dataset, args.sub_dataset)
 
     # the processed directory records scattering type and the largest wavelet scale
-    processed_dir = os.path.join(dataset_dir, 'processed', args.scattering_type, args.wavelet_type, f'largest_scale_{args.largest_scale}')
+    processed_dir = os.path.join(dataset_dir,  'processed', args.scattering_type, args.wavelet_type, f'largest_scale_{args.largest_scale}')
+    print(processed_dir)
     if not os.path.exists(processed_dir):
         os.makedirs(processed_dir)
 
     # load adjacency matrix and signal
     A = np.load(os.path.join(dataset_dir, 'adjacency_matrix.npy'))
     x = np.load(os.path.join(dataset_dir, 'graph_signals.npy'))
-    import pdb; pdb.set_trace()
+    print(f'this is the shape of x initially: {x.shape}')
+    print('Adjacency matrix and signals loaded)')
+    #import pdb; pdb.set_trace()
     if len(x.shape) == 2:
         x = x[:,:,None]
+        print(f'this is the shape of x in calculate scattering: {x.shape}')
     # ensure that we're working with symmetric matrices!
     assert((A == A.T).all())
     if args.wavelet_type == 'W2':
-        wavelets = wav.get_W_2(A, args.largest_scale, low_pass_as_wavelet=(args.scattering_type == 'blis'))
+        wavelets= wav.get_W_2(A, args.largest_scale, low_pass_as_wavelet=(args.scattering_type == 'blis'))
+        #wavelets = wav.compute_W_2_transform(A,x,args.largest_scale,low_pass_as_wavelet=(args.scattering_type == 'blis'))
+        print(f'this is the shape of wavelets in calculate: {wavelets.shape}')
     else:
         wavelets = wav.get_W_1(A, args.largest_scale, low_pass_as_wavelet=(args.scattering_type == 'blis'))
-    st.scattering_transform(x, args.scattering_type, wavelets, args.num_layers, args.highest_moment, processed_dir)
+    print('Started calculating')
+    print(f"this is the shape of x in pre-calculating scattering: {x.shape}")
+    st.scattering_transform(x, args.scattering_type, wavelets, args.num_layers, args.highest_moment, processed_dir,args.wavelet_type)
     
 if __name__ == "__main__":
     start_time = time.time()  # Record the start time

@@ -11,9 +11,11 @@ from torch.nn import (
     Sequential,
 )
 
-from torch_geometric.nn import GINEConv, GPSConv, global_add_pool
-#from torch_geometric.nn.attention import PerformerAttention
+from torch_geometric.nn import GINEConv, GPSConv,GCN, global_add_pool,global_mean_pool
+from torch_geometric.nn.attention import PerformerAttention
+from torch_geometric.nn import GCNConv
 from typing import Any, Dict, Optional
+
 
 
 class RedrawProjection:
@@ -54,8 +56,7 @@ class GPS(torch.nn.Module):
                 ReLU(),
                 Linear(channels, channels),
             )
-            conv = GPSConv(channels = channels, conv = GINEConv(nn), heads=4,
-                           attn_dropout=attn_dropout)
+            conv = GPSConv(channels = channels, conv = GINEConv(nn), heads=4)
             self.convs.append(conv)
 
         self.mlp = Sequential(

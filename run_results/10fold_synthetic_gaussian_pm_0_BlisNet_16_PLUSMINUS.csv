@@ -1,0 +1,2 @@
+model,hidden_dim,epochs,learning_rate,task_type,dataset,sub_dataset,score,stdev
+BlisNet,16,100,0.001,PLUSMINUS,synthetic,gaussian_pm_0,100.0,0.0

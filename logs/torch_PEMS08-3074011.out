@@ -1,0 +1,1599 @@
+Starting GPU BLIS W2 Torch classifier run for PEMS08
+Date: Wed Jul  8 02:27:21 MDT 2026
+Working directory: /bsuscratch/desmondboateng/blis
+Python: /bsuhome/desmondboateng/miniforge3/envs/blis/bin/python
+CUDA_VISIBLE_DEVICES: 0
+==========================================================================================
+BLIS MOMENTS FROM new_class.py + TORCH CLASSIFICATION
+SVC intentionally left out for now
+==========================================================================================
+Device: cuda
+GPU: Tesla V100-PCIE-16GB
+==========================================================================================
+DATASET: PEMS08
+==========================================================================================
+A shape: (170, 170)
+X shape: (17856, 170, 3)
+Saving scattering moments to: data/traffic/PEMS08/processed/blis/W2/largest_scale_4
+A shape: (170, 170)
+X shape: (17856, 170, 3)
+T: 17856
+n_nodes: 170
+n_features: 3
+================================================================================
+Computing layer_1
+================================================================================
+Skipping layer_1; moment files already exist.
+================================================================================
+Computing layer_2
+================================================================================
+Skipping layer_2; moment files already exist.
+================================================================================
+Computing layer_3
+================================================================================
+Skipping layer_3; moment files already exist.
+Finished saving scattering moments.
+Loading: data/traffic/PEMS08/processed/blis/W2/largest_scale_4/layer_1/moment_1.npy
+Loading: data/traffic/PEMS08/processed/blis/W2/largest_scale_4/layer_2/moment_1.npy
+Loading: data/traffic/PEMS08/processed/blis/W2/largest_scale_4/layer_3/moment_1.npy
+X_features shape: (17856, 5652)
+------------------------------------------------------------------------------------------
+TASK: HOUR
+------------------------------------------------------------------------------------------
+y shape: (17856,)
+classes: [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23]
+------------------------------------------------------------------------------------------
+MODEL: LR
+------------------------------------------------------------------------------------------
+Seed: 42
+PCA components: 1
+Manual Torch grid search for LR
+Number of settings: 3
+params={'C': 0.1, 'lr': 0.001, 'weight_decay': 10.0}, cv_accuracy=0.080582
+params={'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}, cv_accuracy=0.085524
+params={'C': 10.0, 'lr': 0.001, 'weight_decay': 0.1}, cv_accuracy=0.086381
+Best params: {'C': 10.0, 'lr': 0.001, 'weight_decay': 0.1}
+Best CV accuracy: 0.086381
+Epoch 1, loss = 3.488174
+Epoch 50, loss = 2.995184
+Epoch 100, loss = 2.958890
+accuracy = 0.070922
+balanced_accuracy = 0.083719
+macro_f1 = 0.012790
+weighted_f1 = 0.011139
+macro_precision = 0.011183
+macro_recall = 0.083719
+n_pca = 1
+best_cv_accuracy = 0.08638070764973316
+best_params = {'C': 10.0, 'lr': 0.001, 'weight_decay': 0.1}
+Seed: 43
+PCA components: 1
+Manual Torch grid search for LR
+Number of settings: 3
+params={'C': 0.1, 'lr': 0.001, 'weight_decay': 10.0}, cv_accuracy=0.084075
+params={'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}, cv_accuracy=0.089412
+params={'C': 10.0, 'lr': 0.001, 'weight_decay': 0.1}, cv_accuracy=0.086776
+Best params: {'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}
+Best CV accuracy: 0.089412
+Epoch 1, loss = 3.408057
+Epoch 50, loss = 3.148962
+Epoch 100, loss = 3.143365
+accuracy = 0.074655
+balanced_accuracy = 0.083333
+macro_f1 = 0.012320
+weighted_f1 = 0.010975
+macro_precision = 0.006672
+macro_recall = 0.083333
+n_pca = 1
+best_cv_accuracy = 0.0894116096725308
+best_params = {'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}
+Seed: 44
+PCA components: 1
+Manual Torch grid search for LR
+Number of settings: 3
+params={'C': 0.1, 'lr': 0.001, 'weight_decay': 10.0}, cv_accuracy=0.079726
+params={'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}, cv_accuracy=0.091981
+params={'C': 10.0, 'lr': 0.001, 'weight_decay': 0.1}, cv_accuracy=0.089873
+Best params: {'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}
+Best CV accuracy: 0.091981
+Epoch 1, loss = 3.463785
+Epoch 50, loss = 3.144387
+Epoch 100, loss = 3.143546
+accuracy = 0.070175
+balanced_accuracy = 0.084259
+macro_f1 = 0.012795
+weighted_f1 = 0.010622
+macro_precision = 0.009008
+macro_recall = 0.084259
+n_pca = 1
+best_cv_accuracy = 0.09198128747446795
+best_params = {'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}
+Seed: 45
+PCA components: 1
+Manual Torch grid search for LR
+Number of settings: 3
+params={'C': 0.1, 'lr': 0.001, 'weight_decay': 10.0}, cv_accuracy=0.080846
+params={'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}, cv_accuracy=0.099427
+params={'C': 10.0, 'lr': 0.001, 'weight_decay': 0.1}, cv_accuracy=0.086249
+Best params: {'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}
+Best CV accuracy: 0.099427
+Epoch 1, loss = 3.576661
+Epoch 50, loss = 3.157504
+Epoch 100, loss = 3.143972
+accuracy = 0.085106
+balanced_accuracy = 0.083781
+macro_f1 = 0.015205
+weighted_f1 = 0.015457
+macro_precision = 0.013130
+macro_recall = 0.083781
+n_pca = 1
+best_cv_accuracy = 0.09942676418264479
+best_params = {'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}
+Seed: 56
+PCA components: 1
+Manual Torch grid search for LR
+Number of settings: 3
+params={'C': 0.1, 'lr': 0.001, 'weight_decay': 10.0}, cv_accuracy=0.071226
+params={'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}, cv_accuracy=0.101469
+params={'C': 10.0, 'lr': 0.001, 'weight_decay': 0.1}, cv_accuracy=0.092574
+Best params: {'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}
+Best CV accuracy: 0.101469
+Epoch 1, loss = 3.453012
+Epoch 50, loss = 3.152648
+Epoch 100, loss = 3.143783
+accuracy = 0.077641
+balanced_accuracy = 0.083333
+macro_f1 = 0.012491
+weighted_f1 = 0.011730
+macro_precision = 0.006777
+macro_recall = 0.083333
+n_pca = 1
+best_cv_accuracy = 0.10146932858931279
+best_params = {'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}
+------------------------------------------------------------------------------------------
+MODEL: MLP
+------------------------------------------------------------------------------------------
+Seed: 42
+PCA components: 1
+Manual Torch grid search for MLP
+Number of settings: 3
+params={'hidden_layer_sizes': (0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.043289
+params={'hidden_layer_sizes': (0, 0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.043289
+params={'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.231139
+Best params: {'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}
+Best CV accuracy: 0.231139
+Epoch 1, loss = 2.988237
+Epoch 50, loss = 2.147919
+Epoch 100, loss = 2.144007
+accuracy = 0.230310
+balanced_accuracy = 0.239813
+macro_f1 = 0.169151
+weighted_f1 = 0.165748
+macro_precision = 0.139804
+macro_recall = 0.239813
+n_pca = 1
+best_cv_accuracy = 0.23113922382552543
+best_params = {'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}
+Seed: 43
+PCA components: 1
+Manual Torch grid search for MLP
+Number of settings: 3
+params={'hidden_layer_sizes': (0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.042894
+params={'hidden_layer_sizes': (0, 0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.042894
+params={'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.224946
+Best params: {'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}
+Best CV accuracy: 0.224946
+Epoch 1, loss = 2.988657
+Epoch 50, loss = 2.149763
+Epoch 100, loss = 2.144492
+accuracy = 0.209406
+balanced_accuracy = 0.212450
+macro_f1 = 0.155498
+weighted_f1 = 0.154083
+macro_precision = 0.143945
+macro_recall = 0.212450
+n_pca = 1
+best_cv_accuracy = 0.22494564143111287
+best_params = {'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}
+Seed: 44
+PCA components: 1
+Manual Torch grid search for MLP
+Number of settings: 3
+params={'hidden_layer_sizes': (0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.043092
+params={'hidden_layer_sizes': (0, 0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.043092
+params={'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.232852
+Best params: {'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}
+Best CV accuracy: 0.232852
+Epoch 1, loss = 2.991608
+Epoch 50, loss = 2.152639
+Epoch 100, loss = 2.145642
+accuracy = 0.195595
+balanced_accuracy = 0.209125
+macro_f1 = 0.147075
+weighted_f1 = 0.140529
+macro_precision = 0.123331
+macro_recall = 0.209125
+n_pca = 1
+best_cv_accuracy = 0.2328523423601502
+best_params = {'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}
+Seed: 45
+PCA components: 1
+Manual Torch grid search for MLP
+Number of settings: 3
+params={'hidden_layer_sizes': (0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.043685
+params={'hidden_layer_sizes': (0, 0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.043685
+params={'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.222640
+Best params: {'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}
+Best CV accuracy: 0.222640
+Epoch 1, loss = 2.941499
+Epoch 50, loss = 2.152443
+Epoch 100, loss = 2.147158
+accuracy = 0.217992
+balanced_accuracy = 0.216194
+macro_f1 = 0.153136
+weighted_f1 = 0.154975
+macro_precision = 0.129400
+macro_recall = 0.216194
+n_pca = 1
+best_cv_accuracy = 0.2226395203268103
+best_params = {'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}
+Seed: 56
+PCA components: 1
+Manual Torch grid search for MLP
+Number of settings: 3
+params={'hidden_layer_sizes': (0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.042696
+params={'hidden_layer_sizes': (0, 0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.042696
+params={'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.225275
+Best params: {'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}
+Best CV accuracy: 0.225275
+Epoch 1, loss = 2.975976
+Epoch 50, loss = 2.149604
+Epoch 100, loss = 2.144924
+accuracy = 0.234416
+balanced_accuracy = 0.235410
+macro_f1 = 0.168422
+weighted_f1 = 0.169771
+macro_precision = 0.153894
+macro_recall = 0.235410
+n_pca = 1
+best_cv_accuracy = 0.22527508730315612
+best_params = {'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}
+------------------------------------------------------------------------------------------
+MODEL: XGB
+------------------------------------------------------------------------------------------
+Seed: 42
+PCA components: 1
+Manual XGB grid search
+Number of settings: 4
+[03:19:00] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:19:00] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:19:01] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}, cv_accuracy=0.272452
+[03:19:02] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:19:02] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:19:03] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 50, 'learning_rate': 0.1, 'max_depth': 6}, cv_accuracy=0.271595
+[03:19:04] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:19:05] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:19:06] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 100, 'learning_rate': 0.05, 'max_depth': 6}, cv_accuracy=0.272254
+[03:19:07] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:19:08] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:19:10] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 100, 'learning_rate': 0.1, 'max_depth': 6}, cv_accuracy=0.269421
+Best params: {'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}
+Best CV accuracy: 0.272452
+[03:19:11] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+accuracy = 0.275476
+balanced_accuracy = 0.280407
+macro_f1 = 0.233043
+weighted_f1 = 0.230196
+macro_precision = 0.232034
+macro_recall = 0.280407
+n_pca = 1
+best_cv_accuracy = 0.27245173617974566
+best_params = {'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}
+Seed: 43
+PCA components: 1
+Manual XGB grid search
+Number of settings: 4
+[03:23:31] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:23:32] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:23:32] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}, cv_accuracy=0.271727
+[03:23:33] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:23:33] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:23:34] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 50, 'learning_rate': 0.1, 'max_depth': 6}, cv_accuracy=0.269487
+[03:23:35] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:23:36] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:23:37] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 100, 'learning_rate': 0.05, 'max_depth': 6}, cv_accuracy=0.270475
+[03:23:38] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:23:39] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:23:41] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 100, 'learning_rate': 0.1, 'max_depth': 6}, cv_accuracy=0.267708
+Best params: {'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}
+Best CV accuracy: 0.271727
+[03:23:42] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+accuracy = 0.274356
+balanced_accuracy = 0.274370
+macro_f1 = 0.236381
+weighted_f1 = 0.237401
+macro_precision = 0.243179
+macro_recall = 0.274370
+n_pca = 1
+best_cv_accuracy = 0.2717269552612506
+best_params = {'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}
+Seed: 44
+PCA components: 1
+Manual XGB grid search
+Number of settings: 4
+[03:28:02] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:28:03] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:28:04] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}, cv_accuracy=0.271002
+[03:28:04] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:28:05] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:28:05] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 50, 'learning_rate': 0.1, 'max_depth': 6}, cv_accuracy=0.270080
+[03:28:06] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:28:07] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:28:08] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 100, 'learning_rate': 0.05, 'max_depth': 6}, cv_accuracy=0.268894
+[03:28:10] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:28:11] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:28:12] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 100, 'learning_rate': 0.1, 'max_depth': 6}, cv_accuracy=0.266917
+Best params: {'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}
+Best CV accuracy: 0.271002
+[03:28:13] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+accuracy = 0.269130
+balanced_accuracy = 0.277452
+macro_f1 = 0.232769
+weighted_f1 = 0.229551
+macro_precision = 0.248329
+macro_recall = 0.277452
+n_pca = 1
+best_cv_accuracy = 0.2710021743427555
+best_params = {'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}
+Seed: 45
+PCA components: 1
+Manual XGB grid search
+Number of settings: 4
+[03:32:33] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:32:34] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:32:35] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}, cv_accuracy=0.273835
+[03:32:35] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:32:36] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:32:36] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 50, 'learning_rate': 0.1, 'max_depth': 6}, cv_accuracy=0.271134
+[03:32:37] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:32:38] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:32:40] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 100, 'learning_rate': 0.05, 'max_depth': 6}, cv_accuracy=0.271200
+[03:32:41] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:32:42] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:32:43] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 100, 'learning_rate': 0.1, 'max_depth': 6}, cv_accuracy=0.267312
+Best params: {'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}
+Best CV accuracy: 0.273835
+[03:32:44] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+accuracy = 0.264278
+balanced_accuracy = 0.265696
+macro_f1 = 0.227930
+weighted_f1 = 0.228060
+macro_precision = 0.228887
+macro_recall = 0.265696
+n_pca = 1
+best_cv_accuracy = 0.2738354088423272
+best_params = {'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}
+Seed: 56
+PCA components: 1
+Manual XGB grid search
+Number of settings: 4
+[03:37:04] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:37:05] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:37:05] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}, cv_accuracy=0.268235
+[03:37:06] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:37:06] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:37:07] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 50, 'learning_rate': 0.1, 'max_depth': 6}, cv_accuracy=0.266192
+[03:37:08] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:37:09] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:37:10] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 100, 'learning_rate': 0.05, 'max_depth': 6}, cv_accuracy=0.266126
+[03:37:12] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:37:13] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[03:37:14] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 100, 'learning_rate': 0.1, 'max_depth': 6}, cv_accuracy=0.263623
+Best params: {'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}
+Best CV accuracy: 0.268235
+[03:37:15] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+accuracy = 0.289287
+balanced_accuracy = 0.287427
+macro_f1 = 0.248270
+weighted_f1 = 0.252505
+macro_precision = 0.248145
+macro_recall = 0.287427
+n_pca = 1
+best_cv_accuracy = 0.2682348290175924
+best_params = {'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}
+------------------------------------------------------------------------------------------
+TASK: DAY
+------------------------------------------------------------------------------------------
+y shape: (17856,)
+classes: [0 1 2 3 4 5 6]
+------------------------------------------------------------------------------------------
+MODEL: LR
+------------------------------------------------------------------------------------------
+Seed: 42
+PCA components: 1
+Manual Torch grid search for LR
+Number of settings: 3
+params={'C': 0.1, 'lr': 0.001, 'weight_decay': 10.0}, cv_accuracy=0.145549
+params={'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}, cv_accuracy=0.181063
+params={'C': 10.0, 'lr': 0.001, 'weight_decay': 0.1}, cv_accuracy=0.180207
+Best params: {'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}
+Best CV accuracy: 0.181063
+Epoch 1, loss = 2.158587
+Epoch 50, loss = 1.943465
+Epoch 100, loss = 1.943351
+accuracy = 0.171706
+balanced_accuracy = 0.171562
+macro_f1 = 0.084802
+weighted_f1 = 0.085021
+macro_precision = 0.074292
+macro_recall = 0.171562
+n_pca = 1
+best_cv_accuracy = 0.18106345127495552
+best_params = {'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}
+Seed: 43
+PCA components: 1
+Manual Torch grid search for LR
+Number of settings: 3
+params={'C': 0.1, 'lr': 0.001, 'weight_decay': 10.0}, cv_accuracy=0.141859
+params={'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}, cv_accuracy=0.176451
+params={'C': 10.0, 'lr': 0.001, 'weight_decay': 0.1}, cv_accuracy=0.172827
+Best params: {'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}
+Best CV accuracy: 0.176451
+Epoch 1, loss = 2.258958
+Epoch 50, loss = 1.945996
+Epoch 100, loss = 1.943436
+accuracy = 0.177678
+balanced_accuracy = 0.174129
+macro_f1 = 0.085221
+weighted_f1 = 0.086855
+macro_precision = 0.101644
+macro_recall = 0.174129
+n_pca = 1
+best_cv_accuracy = 0.1764512090663504
+best_params = {'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}
+Seed: 44
+PCA components: 1
+Manual Torch grid search for LR
+Number of settings: 3
+params={'C': 0.1, 'lr': 0.001, 'weight_decay': 10.0}, cv_accuracy=0.138631
+params={'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}, cv_accuracy=0.178560
+params={'C': 10.0, 'lr': 0.001, 'weight_decay': 0.1}, cv_accuracy=0.171246
+Best params: {'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}
+Best CV accuracy: 0.178560
+Epoch 1, loss = 2.255115
+Epoch 50, loss = 1.943585
+Epoch 100, loss = 1.943328
+accuracy = 0.173572
+balanced_accuracy = 0.166610
+macro_f1 = 0.079897
+weighted_f1 = 0.082600
+macro_precision = 0.062342
+macro_recall = 0.166610
+n_pca = 1
+best_cv_accuracy = 0.17855966264742704
+best_params = {'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}
+Seed: 45
+PCA components: 1
+Manual Torch grid search for LR
+Number of settings: 3
+params={'C': 0.1, 'lr': 0.001, 'weight_decay': 10.0}, cv_accuracy=0.144759
+params={'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}, cv_accuracy=0.172498
+params={'C': 10.0, 'lr': 0.001, 'weight_decay': 0.1}, cv_accuracy=0.168281
+Best params: {'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}
+Best CV accuracy: 0.172498
+Epoch 1, loss = 2.308733
+Epoch 50, loss = 1.945429
+Epoch 100, loss = 1.943577
+accuracy = 0.186264
+balanced_accuracy = 0.173428
+macro_f1 = 0.088597
+weighted_f1 = 0.094300
+macro_precision = 0.067550
+macro_recall = 0.173428
+n_pca = 1
+best_cv_accuracy = 0.17249785860183173
+best_params = {'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}
+Seed: 56
+PCA components: 1
+Manual Torch grid search for LR
+Number of settings: 3
+params={'C': 0.1, 'lr': 0.001, 'weight_decay': 10.0}, cv_accuracy=0.165052
+params={'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}, cv_accuracy=0.168808
+params={'C': 10.0, 'lr': 0.001, 'weight_decay': 0.1}, cv_accuracy=0.173091
+Best params: {'C': 10.0, 'lr': 0.001, 'weight_decay': 0.1}
+Best CV accuracy: 0.173091
+Epoch 1, loss = 2.068080
+Epoch 50, loss = 1.937290
+Epoch 100, loss = 1.937363
+accuracy = 0.177305
+balanced_accuracy = 0.177634
+macro_f1 = 0.088635
+weighted_f1 = 0.088625
+macro_precision = 0.128992
+macro_recall = 0.177634
+n_pca = 1
+best_cv_accuracy = 0.1730908611715095
+best_params = {'C': 10.0, 'lr': 0.001, 'weight_decay': 0.1}
+------------------------------------------------------------------------------------------
+MODEL: MLP
+------------------------------------------------------------------------------------------
+Seed: 42
+PCA components: 1
+Manual Torch grid search for MLP
+Number of settings: 3
+params={'hidden_layer_sizes': (0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.147262
+params={'hidden_layer_sizes': (0, 0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.147262
+params={'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.175331
+Best params: {'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}
+Best CV accuracy: 0.175331
+Epoch 1, loss = 1.938191
+Epoch 50, loss = 1.934586
+Epoch 100, loss = 1.934741
+accuracy = 0.180291
+balanced_accuracy = 0.180411
+macro_f1 = 0.100015
+weighted_f1 = 0.099303
+macro_precision = 0.084727
+macro_recall = 0.180411
+n_pca = 1
+best_cv_accuracy = 0.17533109310140346
+best_params = {'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}
+Seed: 43
+PCA components: 1
+Manual Torch grid search for MLP
+Number of settings: 3
+params={'hidden_layer_sizes': (0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.146274
+params={'hidden_layer_sizes': (0, 0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.146274
+params={'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.173025
+Best params: {'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}
+Best CV accuracy: 0.173025
+Epoch 1, loss = 1.937803
+Epoch 50, loss = 1.934654
+Epoch 100, loss = 1.934878
+accuracy = 0.174692
+balanced_accuracy = 0.170992
+macro_f1 = 0.085578
+weighted_f1 = 0.087292
+macro_precision = 0.078822
+macro_recall = 0.170992
+n_pca = 1
+best_cv_accuracy = 0.17302497199710087
+best_params = {'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}
+Seed: 44
+PCA components: 1
+Manual Torch grid search for MLP
+Number of settings: 3
+params={'hidden_layer_sizes': (0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.147394
+params={'hidden_layer_sizes': (0, 0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.147394
+params={'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.175133
+Best params: {'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}
+Best CV accuracy: 0.175133
+Epoch 1, loss = 1.934596
+Epoch 50, loss = 1.934390
+Epoch 100, loss = 1.934615
+accuracy = 0.172826
+balanced_accuracy = 0.168235
+macro_f1 = 0.084454
+weighted_f1 = 0.086849
+macro_precision = 0.067273
+macro_recall = 0.168235
+n_pca = 1
+best_cv_accuracy = 0.1751334255781775
+best_params = {'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}
+Seed: 45
+PCA components: 1
+Manual Torch grid search for MLP
+Number of settings: 3
+params={'hidden_layer_sizes': (0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.146076
+params={'hidden_layer_sizes': (0, 0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.146076
+params={'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.169203
+Best params: {'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}
+Best CV accuracy: 0.169203
+Epoch 1, loss = 1.938749
+Epoch 50, loss = 1.935804
+Epoch 100, loss = 1.935629
+accuracy = 0.195222
+balanced_accuracy = 0.183827
+macro_f1 = 0.103584
+weighted_f1 = 0.109110
+macro_precision = 0.101912
+macro_recall = 0.183827
+n_pca = 1
+best_cv_accuracy = 0.1692033998813995
+best_params = {'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}
+Seed: 56
+PCA components: 1
+Manual Torch grid search for MLP
+Number of settings: 3
+params={'hidden_layer_sizes': (0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.146010
+params={'hidden_layer_sizes': (0, 0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.146010
+params={'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.171641
+Best params: {'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}
+Best CV accuracy: 0.171641
+Epoch 1, loss = 1.940405
+Epoch 50, loss = 1.935459
+Epoch 100, loss = 1.935187
+accuracy = 0.178798
+balanced_accuracy = 0.178961
+macro_f1 = 0.086122
+weighted_f1 = 0.086124
+macro_precision = 0.079652
+macro_recall = 0.178961
+n_pca = 1
+best_cv_accuracy = 0.17164129933451933
+best_params = {'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}
+------------------------------------------------------------------------------------------
+MODEL: XGB
+------------------------------------------------------------------------------------------
+Seed: 42
+PCA components: 1
+Manual XGB grid search
+Number of settings: 4
+[04:27:33] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:27:33] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:27:33] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}, cv_accuracy=0.236015
+[04:27:34] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:27:34] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:27:34] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 50, 'learning_rate': 0.1, 'max_depth': 6}, cv_accuracy=0.237794
+[04:27:34] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:27:34] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:27:35] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 100, 'learning_rate': 0.05, 'max_depth': 6}, cv_accuracy=0.237333
+[04:27:35] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:27:36] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:27:36] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 100, 'learning_rate': 0.1, 'max_depth': 6}, cv_accuracy=0.233907
+Best params: {'n_estimators': 50, 'learning_rate': 0.1, 'max_depth': 6}
+Best CV accuracy: 0.237794
+[04:27:36] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+accuracy = 0.238149
+balanced_accuracy = 0.240502
+macro_f1 = 0.219404
+weighted_f1 = 0.218180
+macro_precision = 0.230079
+macro_recall = 0.240502
+n_pca = 1
+best_cv_accuracy = 0.2377940304407986
+best_params = {'n_estimators': 50, 'learning_rate': 0.1, 'max_depth': 6}
+Seed: 43
+PCA components: 1
+Manual XGB grid search
+Number of settings: 4
+[04:31:56] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:31:56] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:31:56] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}, cv_accuracy=0.234763
+[04:31:57] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:31:57] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:31:57] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 50, 'learning_rate': 0.1, 'max_depth': 6}, cv_accuracy=0.234500
+[04:31:57] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:31:58] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:31:58] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 100, 'learning_rate': 0.05, 'max_depth': 6}, cv_accuracy=0.235224
+[04:31:58] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:31:59] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:31:59] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 100, 'learning_rate': 0.1, 'max_depth': 6}, cv_accuracy=0.233379
+Best params: {'n_estimators': 100, 'learning_rate': 0.05, 'max_depth': 6}
+Best CV accuracy: 0.235224
+[04:32:00] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+accuracy = 0.236655
+balanced_accuracy = 0.237805
+macro_f1 = 0.212039
+weighted_f1 = 0.211114
+macro_precision = 0.219390
+macro_recall = 0.237805
+n_pca = 1
+best_cv_accuracy = 0.23522435263886146
+best_params = {'n_estimators': 100, 'learning_rate': 0.05, 'max_depth': 6}
+Seed: 44
+PCA components: 1
+Manual XGB grid search
+Number of settings: 4
+[04:36:20] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:36:20] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:36:20] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}, cv_accuracy=0.232523
+[04:36:20] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:36:21] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:36:21] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 50, 'learning_rate': 0.1, 'max_depth': 6}, cv_accuracy=0.231864
+[04:36:21] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:36:21] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:36:22] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 100, 'learning_rate': 0.05, 'max_depth': 6}, cv_accuracy=0.231864
+[04:36:22] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:36:23] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:36:23] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 100, 'learning_rate': 0.1, 'max_depth': 6}, cv_accuracy=0.228965
+Best params: {'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}
+Best CV accuracy: 0.232523
+[04:36:23] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+accuracy = 0.250467
+balanced_accuracy = 0.244849
+macro_f1 = 0.221839
+weighted_f1 = 0.225449
+macro_precision = 0.249195
+macro_recall = 0.244849
+n_pca = 1
+best_cv_accuracy = 0.232522896488107
+best_params = {'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}
+Seed: 45
+PCA components: 1
+Manual XGB grid search
+Number of settings: 4
+[04:40:43] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:40:43] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:40:43] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}, cv_accuracy=0.229953
+[04:40:44] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:40:44] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:40:44] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 50, 'learning_rate': 0.1, 'max_depth': 6}, cv_accuracy=0.232062
+[04:40:44] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:40:45] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:40:45] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 100, 'learning_rate': 0.05, 'max_depth': 6}, cv_accuracy=0.231271
+[04:40:45] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:40:46] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:40:46] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 100, 'learning_rate': 0.1, 'max_depth': 6}, cv_accuracy=0.230217
+Best params: {'n_estimators': 50, 'learning_rate': 0.1, 'max_depth': 6}
+Best CV accuracy: 0.232062
+[04:40:47] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+accuracy = 0.239268
+balanced_accuracy = 0.233885
+macro_f1 = 0.209879
+weighted_f1 = 0.214454
+macro_precision = 0.220743
+macro_recall = 0.233885
+n_pca = 1
+best_cv_accuracy = 0.2320616722672465
+best_params = {'n_estimators': 50, 'learning_rate': 0.1, 'max_depth': 6}
+Seed: 56
+PCA components: 1
+Manual XGB grid search
+Number of settings: 4
+[04:45:06] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:45:06] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:45:06] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}, cv_accuracy=0.238914
+[04:45:06] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:45:07] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:45:07] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 50, 'learning_rate': 0.1, 'max_depth': 6}, cv_accuracy=0.238387
+[04:45:07] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:45:07] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:45:08] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 100, 'learning_rate': 0.05, 'max_depth': 6}, cv_accuracy=0.240166
+[04:45:08] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:45:08] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[04:45:09] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 100, 'learning_rate': 0.1, 'max_depth': 6}, cv_accuracy=0.234895
+Best params: {'n_estimators': 100, 'learning_rate': 0.05, 'max_depth': 6}
+Best CV accuracy: 0.240166
+[04:45:09] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+accuracy = 0.245987
+balanced_accuracy = 0.244143
+macro_f1 = 0.217985
+weighted_f1 = 0.219388
+macro_precision = 0.227325
+macro_recall = 0.244143
+n_pca = 1
+best_cv_accuracy = 0.24016604071950978
+best_params = {'n_estimators': 100, 'learning_rate': 0.05, 'max_depth': 6}
+------------------------------------------------------------------------------------------
+TASK: WEEK
+------------------------------------------------------------------------------------------
+y shape: (17856,)
+classes: [0 1 2 3]
+------------------------------------------------------------------------------------------
+MODEL: LR
+------------------------------------------------------------------------------------------
+Seed: 42
+PCA components: 1
+Manual Torch grid search for LR
+Number of settings: 3
+params={'C': 0.1, 'lr': 0.001, 'weight_decay': 10.0}, cv_accuracy=0.301838
+params={'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}, cv_accuracy=0.320946
+params={'C': 10.0, 'lr': 0.001, 'weight_decay': 0.1}, cv_accuracy=0.320946
+Best params: {'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}
+Best CV accuracy: 0.320946
+Epoch 1, loss = 1.566264
+Epoch 50, loss = 1.381514
+Epoch 100, loss = 1.381439
+accuracy = 0.331840
+balanced_accuracy = 0.250000
+macro_f1 = 0.124580
+weighted_f1 = 0.165362
+macro_precision = 0.082960
+macro_recall = 0.250000
+n_pca = 1
+best_cv_accuracy = 0.32094616854450814
+best_params = {'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}
+Seed: 43
+PCA components: 1
+Manual Torch grid search for LR
+Number of settings: 3
+params={'C': 0.1, 'lr': 0.001, 'weight_decay': 10.0}, cv_accuracy=0.300850
+params={'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}, cv_accuracy=0.323055
+params={'C': 10.0, 'lr': 0.001, 'weight_decay': 0.1}, cv_accuracy=0.323055
+Best params: {'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}
+Best CV accuracy: 0.323055
+Epoch 1, loss = 1.659288
+Epoch 50, loss = 1.381372
+Epoch 100, loss = 1.381168
+accuracy = 0.319895
+balanced_accuracy = 0.250000
+macro_f1 = 0.121182
+weighted_f1 = 0.155062
+macro_precision = 0.079974
+macro_recall = 0.250000
+n_pca = 1
+best_cv_accuracy = 0.3230546221255848
+best_params = {'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}
+Seed: 44
+PCA components: 1
+Manual Torch grid search for LR
+Number of settings: 3
+params={'C': 0.1, 'lr': 0.001, 'weight_decay': 10.0}, cv_accuracy=0.280161
+params={'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}, cv_accuracy=0.323977
+params={'C': 10.0, 'lr': 0.001, 'weight_decay': 0.1}, cv_accuracy=0.323977
+Best params: {'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}
+Best CV accuracy: 0.323977
+Epoch 1, loss = 1.549434
+Epoch 50, loss = 1.381132
+Epoch 100, loss = 1.381070
+accuracy = 0.314670
+balanced_accuracy = 0.250000
+macro_f1 = 0.119676
+weighted_f1 = 0.150634
+macro_precision = 0.078667
+macro_recall = 0.250000
+n_pca = 1
+best_cv_accuracy = 0.3239770705673058
+best_params = {'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}
+Seed: 45
+PCA components: 1
+Manual Torch grid search for LR
+Number of settings: 3
+params={'C': 0.1, 'lr': 0.001, 'weight_decay': 10.0}, cv_accuracy=0.294920
+params={'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}, cv_accuracy=0.321539
+params={'C': 10.0, 'lr': 0.001, 'weight_decay': 0.1}, cv_accuracy=0.321539
+Best params: {'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}
+Best CV accuracy: 0.321539
+Epoch 1, loss = 1.744959
+Epoch 50, loss = 1.384930
+Epoch 100, loss = 1.381335
+accuracy = 0.328481
+balanced_accuracy = 0.250000
+macro_f1 = 0.123630
+weighted_f1 = 0.162441
+macro_precision = 0.082120
+macro_recall = 0.250000
+n_pca = 1
+best_cv_accuracy = 0.32153917111418595
+best_params = {'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}
+Seed: 56
+PCA components: 1
+Manual Torch grid search for LR
+Number of settings: 3
+params={'C': 0.1, 'lr': 0.001, 'weight_decay': 10.0}, cv_accuracy=0.306055
+params={'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}, cv_accuracy=0.324175
+params={'C': 10.0, 'lr': 0.001, 'weight_decay': 0.1}, cv_accuracy=0.324175
+Best params: {'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}
+Best CV accuracy: 0.324175
+Epoch 1, loss = 1.538428
+Epoch 50, loss = 1.381354
+Epoch 100, loss = 1.381124
+accuracy = 0.313550
+balanced_accuracy = 0.250000
+macro_f1 = 0.119352
+weighted_f1 = 0.149691
+macro_precision = 0.078387
+macro_recall = 0.250000
+n_pca = 1
+best_cv_accuracy = 0.3241747380905317
+best_params = {'C': 1.0, 'lr': 0.001, 'weight_decay': 1.0}
+------------------------------------------------------------------------------------------
+MODEL: MLP
+------------------------------------------------------------------------------------------
+Seed: 42
+PCA components: 1
+Manual Torch grid search for MLP
+Number of settings: 3
+params={'hidden_layer_sizes': (0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.320946
+params={'hidden_layer_sizes': (0, 0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.320946
+params={'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.320946
+Best params: {'hidden_layer_sizes': (0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}
+Best CV accuracy: 0.320946
+Epoch 1, loss = 1.384509
+Epoch 50, loss = 1.373631
+Epoch 100, loss = 1.373620
+accuracy = 0.331840
+balanced_accuracy = 0.250000
+macro_f1 = 0.124580
+weighted_f1 = 0.165362
+macro_precision = 0.082960
+macro_recall = 0.250000
+n_pca = 1
+best_cv_accuracy = 0.32094616854450814
+best_params = {'hidden_layer_sizes': (0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}
+Seed: 43
+PCA components: 1
+Manual Torch grid search for MLP
+Number of settings: 3
+params={'hidden_layer_sizes': (0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.323055
+params={'hidden_layer_sizes': (0, 0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.323055
+params={'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.323055
+Best params: {'hidden_layer_sizes': (0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}
+Best CV accuracy: 0.323055
+Epoch 1, loss = 1.384713
+Epoch 50, loss = 1.372836
+Epoch 100, loss = 1.372842
+accuracy = 0.319895
+balanced_accuracy = 0.250000
+macro_f1 = 0.121182
+weighted_f1 = 0.155062
+macro_precision = 0.079974
+macro_recall = 0.250000
+n_pca = 1
+best_cv_accuracy = 0.3230546221255848
+best_params = {'hidden_layer_sizes': (0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}
+Seed: 44
+PCA components: 1
+Manual Torch grid search for MLP
+Number of settings: 3
+params={'hidden_layer_sizes': (0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.323977
+params={'hidden_layer_sizes': (0, 0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.323977
+params={'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.323977
+Best params: {'hidden_layer_sizes': (0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}
+Best CV accuracy: 0.323977
+Epoch 1, loss = 1.384530
+Epoch 50, loss = 1.372552
+Epoch 100, loss = 1.372534
+accuracy = 0.314670
+balanced_accuracy = 0.250000
+macro_f1 = 0.119676
+weighted_f1 = 0.150634
+macro_precision = 0.078667
+macro_recall = 0.250000
+n_pca = 1
+best_cv_accuracy = 0.3239770705673058
+best_params = {'hidden_layer_sizes': (0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}
+Seed: 45
+PCA components: 1
+Manual Torch grid search for MLP
+Number of settings: 3
+params={'hidden_layer_sizes': (0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.321539
+params={'hidden_layer_sizes': (0, 0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.321539
+params={'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.321539
+Best params: {'hidden_layer_sizes': (0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}
+Best CV accuracy: 0.321539
+Epoch 1, loss = 1.384541
+Epoch 50, loss = 1.373417
+Epoch 100, loss = 1.373407
+accuracy = 0.328481
+balanced_accuracy = 0.250000
+macro_f1 = 0.123630
+weighted_f1 = 0.162441
+macro_precision = 0.082120
+macro_recall = 0.250000
+n_pca = 1
+best_cv_accuracy = 0.32153917111418595
+best_params = {'hidden_layer_sizes': (0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}
+Seed: 56
+PCA components: 1
+Manual Torch grid search for MLP
+Number of settings: 3
+params={'hidden_layer_sizes': (0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.324175
+params={'hidden_layer_sizes': (0, 0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.324175
+params={'hidden_layer_sizes': (150, 50), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}, cv_accuracy=0.324175
+Best params: {'hidden_layer_sizes': (0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}
+Best CV accuracy: 0.324175
+Epoch 1, loss = 1.384510
+Epoch 50, loss = 1.372479
+Epoch 100, loss = 1.372469
+accuracy = 0.313550
+balanced_accuracy = 0.250000
+macro_f1 = 0.119352
+weighted_f1 = 0.149691
+macro_precision = 0.078387
+macro_recall = 0.250000
+n_pca = 1
+best_cv_accuracy = 0.3241747380905317
+best_params = {'hidden_layer_sizes': (0, 0), 'activation': 'relu', 'alpha': 0.01, 'lr': 0.001, 'weight_decay': 0.01}
+------------------------------------------------------------------------------------------
+MODEL: XGB
+------------------------------------------------------------------------------------------
+Seed: 42
+PCA components: 1
+Manual XGB grid search
+Number of settings: 4
+[05:35:16] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:35:16] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:35:16] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}, cv_accuracy=0.314621
+[05:35:16] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:35:17] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:35:17] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 50, 'learning_rate': 0.1, 'max_depth': 6}, cv_accuracy=0.312512
+[05:35:17] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:35:17] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:35:17] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 100, 'learning_rate': 0.05, 'max_depth': 6}, cv_accuracy=0.312644
+[05:35:17] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:35:18] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:35:18] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 100, 'learning_rate': 0.1, 'max_depth': 6}, cv_accuracy=0.308361
+Best params: {'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}
+Best CV accuracy: 0.314621
+[05:35:18] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+accuracy = 0.323628
+balanced_accuracy = 0.249625
+macro_f1 = 0.154005
+weighted_f1 = 0.190458
+macro_precision = 0.250802
+macro_recall = 0.249625
+n_pca = 1
+best_cv_accuracy = 0.31462080780127827
+best_params = {'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}
+Seed: 43
+PCA components: 1
+Manual XGB grid search
+Number of settings: 4
+[05:39:38] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:39:38] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:39:38] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}, cv_accuracy=0.322528
+[05:39:38] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:39:38] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:39:38] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 50, 'learning_rate': 0.1, 'max_depth': 6}, cv_accuracy=0.323055
+[05:39:38] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:39:38] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:39:39] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 100, 'learning_rate': 0.05, 'max_depth': 6}, cv_accuracy=0.322198
+[05:39:39] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:39:39] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:39:39] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 100, 'learning_rate': 0.1, 'max_depth': 6}, cv_accuracy=0.313764
+Best params: {'n_estimators': 50, 'learning_rate': 0.1, 'max_depth': 6}
+Best CV accuracy: 0.323055
+[05:39:40] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+accuracy = 0.317656
+balanced_accuracy = 0.255470
+macro_f1 = 0.160677
+weighted_f1 = 0.189518
+macro_precision = 0.270292
+macro_recall = 0.255470
+n_pca = 1
+best_cv_accuracy = 0.3230546221255848
+best_params = {'n_estimators': 50, 'learning_rate': 0.1, 'max_depth': 6}
+Seed: 44
+PCA components: 1
+Manual XGB grid search
+Number of settings: 4
+[05:44:00] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:44:00] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:44:00] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}, cv_accuracy=0.319497
+[05:44:00] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:44:00] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:44:00] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 50, 'learning_rate': 0.1, 'max_depth': 6}, cv_accuracy=0.318640
+[05:44:00] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:44:01] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:44:01] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 100, 'learning_rate': 0.05, 'max_depth': 6}, cv_accuracy=0.318969
+[05:44:01] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:44:01] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:44:01] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 100, 'learning_rate': 0.1, 'max_depth': 6}, cv_accuracy=0.311458
+Best params: {'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}
+Best CV accuracy: 0.319497
+[05:44:02] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+accuracy = 0.313177
+balanced_accuracy = 0.253909
+macro_f1 = 0.151607
+weighted_f1 = 0.179199
+macro_precision = 0.278438
+macro_recall = 0.253909
+n_pca = 1
+best_cv_accuracy = 0.31949660670751795
+best_params = {'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}
+Seed: 45
+PCA components: 1
+Manual XGB grid search
+Number of settings: 4
+[05:48:21] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:48:21] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:48:21] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}, cv_accuracy=0.319035
+[05:48:22] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:48:22] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:48:22] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 50, 'learning_rate': 0.1, 'max_depth': 6}, cv_accuracy=0.315016
+[05:48:22] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:48:22] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:48:22] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 100, 'learning_rate': 0.05, 'max_depth': 6}, cv_accuracy=0.316268
+[05:48:23] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:48:23] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:48:23] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 100, 'learning_rate': 0.1, 'max_depth': 6}, cv_accuracy=0.308888
+Best params: {'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}
+Best CV accuracy: 0.319035
+[05:48:23] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+accuracy = 0.331094
+balanced_accuracy = 0.260312
+macro_f1 = 0.168036
+weighted_f1 = 0.201573
+macro_precision = 0.332091
+macro_recall = 0.260312
+n_pca = 1
+best_cv_accuracy = 0.31903538248665747
+best_params = {'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}
+Seed: 56
+PCA components: 1
+Manual XGB grid search
+Number of settings: 4
+[05:52:42] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:52:42] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:52:43] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}, cv_accuracy=0.319233
+[05:52:43] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:52:43] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:52:43] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 50, 'learning_rate': 0.1, 'max_depth': 6}, cv_accuracy=0.315148
+[05:52:43] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:52:43] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:52:43] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 100, 'learning_rate': 0.05, 'max_depth': 6}, cv_accuracy=0.315411
+[05:52:44] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:52:44] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+[05:52:44] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+params={'n_estimators': 100, 'learning_rate': 0.1, 'max_depth': 6}, cv_accuracy=0.305989
+Best params: {'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}
+Best CV accuracy: 0.319233
+[05:52:44] WARNING: /home/conda/feedstock_root/build_artifacts/xgboost-split_1700181168148/work/src/learner.cc:767: 
+Parameters: { "device" } are not used.
+
+accuracy = 0.309817
+balanced_accuracy = 0.251605
+macro_f1 = 0.146927
+weighted_f1 = 0.173968
+macro_precision = 0.245311
+macro_recall = 0.251605
+n_pca = 1
+best_cv_accuracy = 0.3192330500098834
+best_params = {'n_estimators': 50, 'learning_rate': 0.05, 'max_depth': 6}
+==========================================================================================
+Saved per-seed results to: results/PEMS08/torch_blis_PEMS08_HOUR_DAY_WEEK_LR_MLP_XGB_W2_L1_2_3_M1_20260708_055244_per_seed.csv
+Saved summary results to: results/PEMS08/torch_blis_PEMS08_HOUR_DAY_WEEK_LR_MLP_XGB_W2_L1_2_3_M1_20260708_055244_summary.csv
+==========================================================================================
+  dataset  task  ... n_pca_mean  best_cv_accuracy_mean
+0  PEMS08   DAY  ...        1.0               0.176333
+1  PEMS08   DAY  ...        1.0               0.172867
+2  PEMS08   DAY  ...        1.0               0.235554
+3  PEMS08  HOUR  ...        1.0               0.093734
+4  PEMS08  HOUR  ...        1.0               0.227370
+5  PEMS08  HOUR  ...        1.0               0.271450
+6  PEMS08  WEEK  ...        1.0               0.322738
+7  PEMS08  WEEK  ...        1.0               0.322738
+8  PEMS08  WEEK  ...        1.0               0.319088
+
+[9 rows x 21 columns]
+Finished GPU BLIS W2 Torch classifier run for PEMS08
+Date: Wed Jul  8 05:52:47 MDT 2026

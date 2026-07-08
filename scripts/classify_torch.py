@@ -1,9 +1,11 @@
+import sys 
+import os 
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from blis.data import traffic, cloudy, synthetic
 from blis.models.GPS import GPS
 import argparse
 import torch
 import torch_geometric.transforms as T
-
 from blis.models.GNN_models import GCN, GAT, GIN, GNNML1, GNNML3, ChebNet, MLP, PPGN
 from blis.models.blis_legs_layer import BlisNet
 import argparse
@@ -21,7 +23,7 @@ def main(args):
         print(f'Training {args.model} on dataset {args.dataset, args.sub_dataset} on task {args.task_type}')
     total_performance = []
     #for seed in [42,43,44,45,46]:
-    for seed in np.arange(1,11):
+    for seed in np.arange(1,5):
 
         if args.model == "GPS":
             transform = T.AddRandomWalkPE(walk_length=20, attr_name='pe')
@@ -29,7 +31,7 @@ def main(args):
             transform = T.LaplacianLambdaMax(normalization="sym", is_undirected = True) # Check that all graphs are indeed undirected.
         elif args.model == "GNNML3":
             transform = SpectralDesign(nmax=0,recfield=1,dv=2,nfreq=4)
-        elif args.model == "PPGN":
+        elif args.model == "PPGN": 
             transform = SpectralDesign(nmax=-1,recfield=1,dv=2,nfreq=4)
         else:
             transform = None
@@ -105,7 +107,7 @@ def main(args):
                                 edge_in_channels = None,
                                 trainable_laziness = False)
         elif args.model == 'MLP':
-            raise ValueError("Not yet implemented (at least correctly lol)")
+            #raise ValueError("Not yet implemented (at least correctly lol)")
             model = MLP(in_features = mlp_in_dim, hidden_channels = args.hidden_dim, num_classes = num_classes)
         else:
             raise ValueError("Invalid model")
@@ -208,7 +210,7 @@ if __name__ == "__main__":
     results_list = []
     model_list = args.model 
     if args.model[0] == 'all':
-        model_list = ['GCN', 'GAT', 'GIN', 'ChebNet', 'BlisNet', 'GNNML1', 'GNNML3', 'MLP']
+        model_list = ['GCN', 'GAT', 'GIN', 'ChebNet', 'BlisNet', 'GNNML1', 'GNNML3']
 
     for model in model_list:
         for sub_dataset in sub_datasets:
@@ -236,7 +238,13 @@ if __name__ == "__main__":
         args.model = 'multi-model'
 
     save_name = f'10fold_{args.dataset}_{sub_dataset}_{args.model}_{args.hidden_dim}_{args.task_type}.csv'
-    df_results.to_csv(os.path.join('run_results',save_name), index = False)
+    print(save_name)
+    save_dir='run_results'
+    if os.path.exists(save_dir):
+        df_results.to_csv(os.path.join(save_dir,save_name), index = False)
+    else:
+        os.mkdir(save_dir)
+        df_results.to_csv(os.path.join(save_dir,save_name), index = False)
 
     #main(args)
 

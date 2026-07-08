@@ -15,6 +15,9 @@ def synthetic_data_loader(seed, subdata_type, task_type, batch_size, transform=N
     label_path = os.path.join(DATA_DIR,"synthetic",subdata_type,task_type,"label.npy")
     graph_path = os.path.join(DATA_DIR,"synthetic",subdata_type,"adjacency_matrix.npy")
     signal_path = os.path.join(DATA_DIR,"synthetic",subdata_type,"graph_signals.npy")
+    
+    
+    #print(f'This is the label path {label_path}')
 
     # Load data
     X = np.load(signal_path, allow_pickle=True)
@@ -65,7 +68,10 @@ def synthetic_scattering_data_loader(seed, subdata_type, task_type, batch_size=0
         
         moments = []
         for layer_path in layer_paths:
+            print(os.path.exists(layer_path))
+            print(f'this is layer path {layer_path}')
             for moment in scattering_dict["moments"]:
+                print(f'monent is {moment}')
                 moments.append(np.load(os.path.join(layer_path, "moment_{}.npy".format(moment))))
 
         X = np.concatenate(moments,1)
