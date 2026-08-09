@@ -3,6 +3,7 @@ name = "blis"
 version = "0.1.0"
 description = ""
 authors = ["edebrouwer <edward.debrouwer@gmail.com>"]
+license-files = ["LICENSE.md"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
